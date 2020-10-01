@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetDreams.Api", "SweetDreams.Api\SweetDreams.Api.csproj", "{0B376E4F-F93F-4673-982B-89A14B25B703}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Api", "SweetDreams.Api\SweetDreams.Api.csproj", "{0B376E4F-F93F-4673-982B-89A14B25B703}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetDreams.Client", "SweetDreams.Client\SweetDreams.Client.csproj", "{D122BB32-9184-40F0-B716-445A181C2D82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Client", "SweetDreams.Client\SweetDreams.Client.csproj", "{D122BB32-9184-40F0-B716-445A181C2D82}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetDreams.Admin", "SweetDreams.Admin\SweetDreams.Admin.csproj", "{72C27544-F1A1-4EA6-BF31-0DBEBE1460B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Admin", "SweetDreams.Admin\SweetDreams.Admin.csproj", "{72C27544-F1A1-4EA6-BF31-0DBEBE1460B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

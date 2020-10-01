@@ -1,0 +1,105 @@
+﻿@page "/RegistrarHabitacion"
+
+@using Models
+@using System.IO;
+
+@inject IToastService toast
+
+<EditForm Model="habitacion">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Habitaciones</h3>
+        </div>
+        <div class="card-body">
+            <form>
+
+                @*HabitaciónId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>HabitaciónId</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />
+                                @*<div class="input-group-append">
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
+                                </div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Numero Habitación*@
+                <div class="form-group">
+                    <label>Numero de habitación</label>
+                    <InputNumber @bind-Value="habitacion.NumeroHabitacion" class="form-control" />
+                </div>
+
+                @*Tipo*@
+                <div class="form-group">
+                    <label>Tipo</label>
+                    <InputText @bind-Value="habitacion.Tipo" class="form-control" />
+                </div>
+
+                @*Características*@
+                <div class="form-group">
+                    <label>Características</label>
+                    <InputText @bind-Value="habitacion.Caracteriscas" class="form-control" />
+                </div>
+
+                @*Precio*@
+                <div class="form-group">
+                    <label>Precio</label>
+                    <InputNumber @bind-Value="habitacion.Precio" class="form-control" />
+                </div>
+
+                @*Estado*@
+                <div class="form-group">
+                    <label>Estado</label>
+                    <InputCheckbox @bind-Value="habitacion.Estado" class="form-control" />
+                </div>
+
+                @*Foto*@
+                <div class="form-group">
+                    <label>Foto</label>
+                    <InputFile OnChange="CargarFoto"/>
+                    @if(habitacion.Foto != null)
+                    {
+                        <img src="habitacion.Foto" style="height:300px;width:300px"/>
+                    }
+                </div>
+
+            </form>
+        </div>
+        @*<div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
+            </div>
+        </div>*@
+    </div>
+</EditForm>
+
+@code {
+    private Habitacion habitacion = new Habitacion();
+
+    async Task CargarFoto(IFileListEntry[] files)
+    {
+        var file = files.FirstOrDefault();
+        if(file != null)
+        {
+            var ms = new MemoryStream();
+            await file.Data.CopyToAsync(ms);
+
+            if(file.Name.Contains("png") || file.Name.Contains("jpg"))
+            {
+                var reader = new StreamReader(file.Data);
+
+                string imageBase64Data = Convert.ToBase64String(ms.ToArray());
+
+                habitacion.Foto = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
+            }
+        }
+    }
+}
