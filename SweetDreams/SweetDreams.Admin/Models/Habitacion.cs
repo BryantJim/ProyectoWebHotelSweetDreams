@@ -8,7 +8,6 @@ namespace SweetDreams.Admin.Models
 {
     public class Habitacion
     {
-        [Key]
         public int HabitacionId { get; set; }
         public int NumeroHabitacion { get; set; }
         public string Tipo { get; set; }

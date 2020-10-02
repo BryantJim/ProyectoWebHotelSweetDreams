@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SweetDreams.Api.DAL;
 
 namespace SweetDreams.Api
 {
@@ -29,6 +31,7 @@ namespace SweetDreams.Api
                  .AllowAnyMethod()
                  .AllowAnyHeader()
                  .AllowAnyOrigin()));
+            services.AddDbContext<Contexto>(optionsAction: options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
         }
 
