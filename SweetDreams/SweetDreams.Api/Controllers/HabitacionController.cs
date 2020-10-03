@@ -128,7 +128,7 @@ namespace SweetDreams.Api.Controllers
         [HttpPost]
         public async Task<ActionResult<bool>> Guardar(Habitacion habitacion)
         {
-                if (!Existe(habitacion.HabitacionId))
+                if (Existe(habitacion.HabitacionId))
                     return await Modificar(habitacion);
                 else
                     return await Insertar(habitacion);
