@@ -12,7 +12,7 @@ namespace SweetDreams.Api.Migrations
                 {
                     HabitacionId = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    NumeroHabitacion = table.Column<int>(nullable: false),
+                    NumeroHabitacion = table.Column<string>(nullable: true),
                     Tipo = table.Column<string>(nullable: true),
                     Caracteriscas = table.Column<string>(nullable: true),
                     Precio = table.Column<decimal>(nullable: false),

@@ -84,6 +84,8 @@ namespace SweetDreams.Api.Controllers
 
                 if (encontrado == null)
                     return new Habitacion();
+                if (encontrado.Accesibilidad == false)
+                    return new Habitacion();
                 else
                     habitacion = encontrado;
             }

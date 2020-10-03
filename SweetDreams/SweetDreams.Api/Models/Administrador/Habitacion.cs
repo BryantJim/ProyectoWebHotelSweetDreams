@@ -10,7 +10,7 @@ namespace SweetDreams.Api.Models.Administrador
     {
         [Key]
         public int HabitacionId { get; set; }
-        public int NumeroHabitacion { get; set; }
+        public string NumeroHabitacion { get; set; }
         public string Tipo { get; set; }
         public string Caracteriscas { get; set; }
         public decimal Precio { get; set; }

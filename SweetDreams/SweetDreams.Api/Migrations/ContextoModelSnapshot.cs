@@ -33,8 +33,8 @@ namespace SweetDreams.Api.Migrations
                     b.Property<string>("Foto")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("NumeroHabitacion")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("NumeroHabitacion")
+                        .HasColumnType("TEXT");
 
                     b.Property<decimal>("Precio")
                         .HasColumnType("TEXT");
