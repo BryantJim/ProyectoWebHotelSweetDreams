@@ -9,7 +9,7 @@ namespace SweetDreams.Admin.Models
     public class Habitacion
     {
         public int HabitacionId { get; set; }
-        public int NumeroHabitacion { get; set; }
+        public string NumeroHabitacion { get; set; }
         public string Tipo { get; set; }
         public string Caracteriscas { get; set; }
         public decimal Precio { get; set; }
@@ -20,7 +20,7 @@ namespace SweetDreams.Admin.Models
         public Habitacion()
         {
             HabitacionId = 0;
-            NumeroHabitacion = 0;
+            NumeroHabitacion = string.Empty;
             Tipo = string.Empty;
             Caracteriscas = string.Empty;
             Precio = 0;
@@ -29,7 +29,7 @@ namespace SweetDreams.Admin.Models
             Accesibilidad = true;
         }
 
-        public Habitacion(int Habitacionid, int numeroHabitacion, string tipo, string caracteriscas, decimal precio, string foto, bool estado, bool accesibilidad)
+        public Habitacion(int Habitacionid, string numeroHabitacion, string tipo, string caracteriscas, decimal precio, string foto, bool estado, bool accesibilidad)
         {
             HabitacionId = Habitacionid;
             NumeroHabitacion = numeroHabitacion;

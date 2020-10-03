@@ -26,7 +26,7 @@ namespace SweetDreams.Api.Controllers
             List<Habitacion> habitacion;
             try
             {
-                habitacion = await contexto.Habitacion.ToListAsync();
+                habitacion = await contexto.Habitacion.Where(h => h.Accesibilidad == true).ToListAsync();
             }
             catch (Exception)
             {
@@ -61,7 +61,9 @@ namespace SweetDreams.Api.Controllers
 
                 if(habitacion != null)
                 {
-                    contexto.Habitacion.Remove(habitacion);
+                    habitacion.Accesibilidad = false;
+                    contexto.Habitacion.Update(habitacion);
+                    //contexto.Habitacion.Remove(habitacion);
                     eliminado = (await contexto.SaveChangesAsync() > 0);
                 }
             }
