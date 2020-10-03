@@ -76,19 +76,20 @@ namespace SweetDreams.Api.Controllers
         public async Task<ActionResult<Habitacion>> Buscar(int id)
         {
             Habitacion habitacion = new Habitacion();
-            try
+            try  
             {
-                habitacion = await contexto.Habitacion.Where(e => e.HabitacionId == id).SingleOrDefaultAsync();
+                var encontrado = await contexto.Habitacion.FindAsync(id);
 
-                if (habitacion == null)
-                    habitacion.HabitacionId = -1;
-                
+                if (encontrado == null)
+                    return new Habitacion();
+                else
+                    habitacion = encontrado;
             }
             catch (Exception)
             {
                 throw;
             }
-            return Ok(habitacion);
+            return habitacion;
         }
 
         private async Task<ActionResult<bool>> Modificar([FromBody] Habitacion habitacion)

@@ -24,8 +24,8 @@
                             <div class="input-group">
                                 <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />
                                 <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
-                                    </div>
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -74,12 +74,12 @@
             </form>
         </div>
         <div class="card-footer">
-                <div class="form-group text-center" display: inline-block>
-                    <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
-                    <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
-                    <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
-                </div>
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
             </div>
+        </div>
     </div>
 </EditForm>
 
@@ -114,7 +114,9 @@
     {
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
 
-        if (guardado != null)
+        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
         {
             toast.ShowSuccess("Guardado correctamente");
             Nuevo();
@@ -126,9 +128,11 @@
 
     private async Task Eliminar()
     {
-        var Eliminado = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}", habitacion);
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}",habitacion.HabitacionId);
 
-        if (Eliminado != null)
+        var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
         {
             toast.ShowSuccess("Eliminado correctamente");
             Nuevo();
@@ -139,17 +143,12 @@
 
     private async Task Buscar()
     {
-        if(habitacion.HabitacionId > 0)
-        {
-            habitacion = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}");
+        var respuesta = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}");
 
-            if(habitacion.HabitacionId == -1)
-            {
-                toast.ShowWarning("No existe");
-                Nuevo();
-            }
-        }
-
+        if (respuesta.HabitacionId == 0)
+            toast.ShowError("Id no existe");
+        else
+            habitacion = respuesta;
 
     }
 }
