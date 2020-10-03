@@ -20,7 +20,7 @@
                 <div class="form-row align-items-center">
                     <div class="col">
                         <div class="form-group">
-                            <label>HabitaciónId</label>
+                            <label>Habitación Id</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />
                                 <div class="input-group-append">
@@ -154,7 +154,10 @@
         var respuesta = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}");
 
         if (respuesta.HabitacionId == 0)
-            toast.ShowError("Id no existe");
+        {
+            Nuevo();
+            toast.ShowWarning("Habitación no encontrada");
+        }
         else
             habitacion = respuesta;
 
