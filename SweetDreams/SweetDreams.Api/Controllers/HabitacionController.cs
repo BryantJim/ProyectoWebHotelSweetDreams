@@ -28,9 +28,8 @@ namespace SweetDreams.Api.Controllers
             {
                 habitacion = await contexto.Habitacion.ToListAsync();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
                 throw;
             }
             return habitacion;
@@ -41,59 +40,55 @@ namespace SweetDreams.Api.Controllers
             bool guardar = false;
             try
             {
-                if (contexto.Habitacion.Add(habitacion) != null)
-                {
-                    guardar = await contexto.SaveChangesAsync() > 0;
-                }
+                contexto.Habitacion.Add(habitacion);
+                guardar = await contexto.SaveChangesAsync() > 0;
+                
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
                 throw;
             }
             return guardar;
         }
 
         [HttpPost("{id}")]
-        public async Task<ActionResult<Action>> Eliminar(int id)
+        public async Task<ActionResult<bool>> Eliminar(int id)
         {
+            bool eliminado = false;
             try
             {
                 var habitacion = await contexto.Habitacion.Where(d => d.HabitacionId == id).SingleOrDefaultAsync();
 
-                if (habitacion == null)
-                    return NotFound("Estudiantes no encontrado");
-                else
+                if(habitacion != null)
                 {
                     contexto.Habitacion.Remove(habitacion);
-                    await contexto.SaveChangesAsync();
-                    return Ok("Estudiante eliminado");
+                    eliminado = (await contexto.SaveChangesAsync() > 0);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
                 throw;
             }
+            return eliminado;
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Habitacion>> Buscar(int id)
         {
+            Habitacion habitacion = new Habitacion();
             try
             {
-                var habitacion = await contexto.Habitacion.Where(d => d.HabitacionId == id).SingleOrDefaultAsync();
+                habitacion = await contexto.Habitacion.Where(e => e.HabitacionId == id).SingleOrDefaultAsync();
 
                 if (habitacion == null)
-                    return NotFound("Estudiantes no encontrado");
-                else
-                    return Ok(habitacion);
+                    habitacion.HabitacionId = -1;
+                
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
                 throw;
             }
+            return Ok(habitacion);
         }
 
         private async Task<ActionResult<bool>> Modificar([FromBody] Habitacion habitacion)
@@ -104,32 +99,34 @@ namespace SweetDreams.Api.Controllers
                 contexto.Habitacion.Update(habitacion);
                 modificar = await contexto.SaveChangesAsync() > 0;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e);
                 throw;
             }
             return modificar;
         }
 
-        [HttpPost]
-        public async Task<ActionResult<bool>> Guardar(Habitacion habitacion)
+        private bool Existe(int id)
         {
             bool existe;
             try
             {
-                existe = await contexto.Habitacion.AnyAsync(a => a.HabitacionId == habitacion.HabitacionId);
+                existe = contexto.Habitacion.Any(a => a.HabitacionId == id);
+            }                
+            catch (Exception)
+            {
+                throw;
+            }
+            return existe;
+        }
 
-                if (existe)
+        [HttpPost]
+        public async Task<ActionResult<bool>> Guardar(Habitacion habitacion)
+        {
+                if (!Existe(habitacion.HabitacionId))
                     return await Modificar(habitacion);
                 else
                     return await Insertar(habitacion);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
     }
 }

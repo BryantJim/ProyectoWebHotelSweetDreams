@@ -1,8 +1,10 @@
 ﻿@page "/RegistrarHabitacion"
 
 @using Models
-@using System.IO;
+@using System.IO
+@using System.Net.Http
 
+@inject HttpClient Http
 @inject IToastService toast
 
 <EditForm Model="habitacion">
@@ -21,9 +23,9 @@
                             <label>HabitaciónId</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />
-                                @*<div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
-                                </div>*@
+                                <div class="input-group-append">
+                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
+                                    </div>
                             </div>
                         </div>
                     </div>
@@ -62,22 +64,22 @@
                 @*Foto*@
                 <div class="form-group">
                     <label>Foto</label>
-                    <InputFile OnChange="CargarFoto"/>
-                    @if(habitacion.Foto != null)
+                    <InputFile OnChange="CargarFoto" />
+                    @if (habitacion.Foto != null)
                     {
-                        <img src="@habitacion.Foto" style="height:300px;width:300px"/>
+                        <img src="@habitacion.Foto" style="height:300px;width:300px" />
                     }
                 </div>
 
             </form>
         </div>
-        @*<div class="card-footer">
-            <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
+        <div class="card-footer">
+                <div class="form-group text-center" display: inline-block>
+                    <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
+                    <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                    <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
+                </div>
             </div>
-        </div>*@
     </div>
 </EditForm>
 
@@ -87,12 +89,12 @@
     async Task CargarFoto(IFileListEntry[] files)
     {
         var file = files.FirstOrDefault();
-        if(file != null)
+        if (file != null)
         {
             var ms = new MemoryStream();
             await file.Data.CopyToAsync(ms);
 
-            if(file.Name.Contains("png") || file.Name.Contains("jpg"))
+            if (file.Name.Contains("png") || file.Name.Contains("jpg"))
             {
                 var reader = new StreamReader(file.Data);
 
@@ -101,5 +103,53 @@
                 habitacion.Foto = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
             }
         }
+    }
+
+    private void Nuevo()
+    {
+        habitacion = new Habitacion();
+    }
+
+    private async Task Guardar()
+    {
+        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
+
+        if (guardado != null)
+        {
+            toast.ShowSuccess("Guardado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("Guardado incorrecto");
+
+    }
+
+    private async Task Eliminar()
+    {
+        var Eliminado = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}", habitacion);
+
+        if (Eliminado != null)
+        {
+            toast.ShowSuccess("Eliminado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private async Task Buscar()
+    {
+        if(habitacion.HabitacionId > 0)
+        {
+            habitacion = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}");
+
+            if(habitacion.HabitacionId == -1)
+            {
+                toast.ShowWarning("No existe");
+                Nuevo();
+            }
+        }
+
+
     }
 }
