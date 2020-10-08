@@ -5,6 +5,7 @@ using SweetDreams.Api.Models.Administrador;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace SweetDreams.Api.Controllers
@@ -21,19 +22,21 @@ namespace SweetDreams.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Habitacion>>> GetList()
+        public async Task<ActionResult<IEnumerable<Habitacion>>> GetList(Expression<Func<Habitacion,bool>>habitacion)
         {
-            List<Habitacion> habitacion;
+            List<Habitacion> Lista;
             try
             {
-                habitacion = await contexto.Habitacion.Where(h => h.Accesibilidad == true).ToListAsync();
+                Lista = await contexto.Habitacion.Where(habitacion).ToListAsync();
+                Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
             {
                 throw;
             }
-            return habitacion;
+            return Lista;
         }
+
 
         private async Task<ActionResult<bool>> Insertar(Habitacion habitacion)
         {
