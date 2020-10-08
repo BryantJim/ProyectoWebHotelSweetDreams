@@ -27,6 +27,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<string>("Caracteriscas")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CaracteristicasSelecciones")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("Estado")
                         .HasColumnType("INTEGER");
 
