@@ -45,21 +45,21 @@
 
                 @*Características*@
                 <div class="card">
-                    <label>Características:</label>
-                </div>
-                <div class="form-group card-body">
-                    <label>--------------------</label>
-                    @for (int i = 0; i < 5; i++)
-                    {
-                        int index = i;
+                    <h5 class="card-header">Características</h5>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                int index = i;
 
-                        <div class="form-group form-inline">
-                            <label>@Caracteristicas[index]</label>
-                            <input type="checkbox" @bind="Elecciones[index]" class="form-check-input col-1" />
+                                <div class="form-group form-inline">
+                                    <label>@Caracteristicas[index]</label>
+                                    <input type="checkbox" @bind="Elecciones[index]" class="form-check-input col-1" />
+                                </div>
+                            }
                         </div>
-                    }
-                    <label>--------------------</label>
-                </div>
+                    </div>
+            </div>
 
                 @*Precio*@
                 <div class="form-group">
