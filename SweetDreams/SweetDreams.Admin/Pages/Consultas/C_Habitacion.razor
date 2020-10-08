@@ -89,7 +89,6 @@
                             <td><a href="#">Mostrar</a></td>
                         </tr>
                         }
-                        }
                     </tbody>
                 </table>
             </div>
@@ -99,7 +98,7 @@
 
 @code
 {
-    private Habitacion[] ListaHabitacion;
+    private List<Habitacion> ListaHabitacion { get; set; }
 
     private DateTime Desde { get; set; } = DateTime.Now;
     private DateTime Hasta { get; set; } = DateTime.Now;
@@ -116,6 +115,7 @@
 
     private void Nuevo()
     {
+        ListaHabitacion = new List<Habitacion>();
         Filtro = "0";
         Criterio = string.Empty;
     }
@@ -125,7 +125,7 @@
         int id;
         int.TryParse(Criterio, out id);
 
-        ListaHabitacion = await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion");
+        ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
 
         id = 8;
     }

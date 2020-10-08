@@ -163,6 +163,8 @@
 
     private void AsignarCaracteristicas()
     {
+        bool algunSeleccionado = false;
+
         habitacion.CaracteristicasSelecciones = string.Empty;
         habitacion.Caracteriscas = string.Empty;
 
@@ -175,10 +177,13 @@
 
             if (Elecciones[i] == true)
             {
-                if(i == 0)
+                if(algunSeleccionado == false)
+                {
                     habitacion.Caracteriscas = habitacion.Caracteriscas + Caracteristicas[i];
+                    algunSeleccionado = true;
+                }
                 else
-                    habitacion.Caracteriscas = habitacion.Caracteriscas + ", " + Caracteristicas[i];
+                    habitacion.Caracteriscas = habitacion.Caracteriscas + ", " + Caracteristicas[i] ;
 
             }
         }
