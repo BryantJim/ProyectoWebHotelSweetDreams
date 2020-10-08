@@ -44,15 +44,22 @@
                 </div>
 
                 @*Características*@
-                @for (int i = 0; i < 5; i++)
-                {
-                    int index = i;
+                <div class="card">
+                    <label>Características:</label>
+                </div>
+                <div class="form-group card-body">
+                    <label>--------------------</label>
+                    @for (int i = 0; i < 5; i++)
+                    {
+                        int index = i;
 
-                    <div class="form-group form-inline">
-                        <label>@Caracteristicas[index]</label>
-                        <input type="checkbox" @bind-value="Elecciones[index]" class="form-check-input col-1" />
-                    </div>
-                }
+                        <div class="form-group form-inline">
+                            <label>@Caracteristicas[index]</label>
+                            <input type="checkbox" @bind="Elecciones[index]" class="form-check-input col-1" />
+                        </div>
+                    }
+                    <label>--------------------</label>
+                </div>
 
                 @*Precio*@
                 <div class="form-group">
@@ -133,6 +140,7 @@
     private void Nuevo()
     {
         habitacion = new Habitacion();
+        Elecciones = new bool[5];
     }
 
     private async Task Guardar()
