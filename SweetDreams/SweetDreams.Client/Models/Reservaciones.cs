@@ -28,7 +28,7 @@ namespace SweetDreams.Client.Models
         public string CodigoSeguridad { get; set; }
 
         [ForeignKey("ReservacionId")]
-        public List<ReservacionesDetalle> ReservacionesDetalles { get; set; }
+        public List<ReservacionesDetalle> ReservacionesDetalle { get; set; }
 
 
         public Reservaciones()

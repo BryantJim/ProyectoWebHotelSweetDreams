@@ -11,6 +11,7 @@ namespace SweetDreams.Client.Models
         [Key]
         public int DetalleId { get; set; }
 
+        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public int ReservacionId { get; set; }
 
         [Required(ErrorMessage = "Este campo no puede estar vacio.")]
