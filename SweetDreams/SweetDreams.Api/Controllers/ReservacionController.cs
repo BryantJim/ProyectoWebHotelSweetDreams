@@ -26,7 +26,7 @@ namespace SweetDreams.Api.Controllers
             List<Reservaciones> Lista;
             try
             {
-                Lista = await contexto.Reservaciones.Where(h => h.ReservacionId > 0).ToListAsync();
+                Lista = await contexto.Reservaciones.Where(r => r.ReservacionId > 0).ToListAsync();
                 //Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
@@ -37,12 +37,12 @@ namespace SweetDreams.Api.Controllers
         }
 
 
-        private async Task<ActionResult<bool>> Insertar(Reservaciones Reservaciones)
+        private async Task<ActionResult<bool>> Insertar(Reservaciones reservaciones)
         {
             bool guardar = false;
             try
             {
-                contexto.Reservaciones.Add(Reservaciones);
+                contexto.Reservaciones.Add(reservaciones);
                 guardar = await contexto.SaveChangesAsync() > 0;
 
             }
@@ -59,12 +59,12 @@ namespace SweetDreams.Api.Controllers
             bool eliminado = false;
             try
             {
-                var Reservaciones = await contexto.Reservaciones.Where(d => d.ReservacionId == id).SingleOrDefaultAsync();
+                var reservaciones = await contexto.Reservaciones.Where(d => d.ReservacionId == id).SingleOrDefaultAsync();
 
-                if (Reservaciones != null)
+                if (reservaciones != null)
                 {
-                    Reservaciones.Accesibilidad = false;
-                    contexto.Reservaciones.Update(Reservaciones);
+                    reservaciones.Accesibilidad = false;
+                    contexto.Reservaciones.Update(reservaciones);
                     //contexto.Reservaciones.Remove(Reservaciones);
                     eliminado = (await contexto.SaveChangesAsync() > 0);
                 }
@@ -79,7 +79,7 @@ namespace SweetDreams.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Reservaciones>> Buscar(int id)
         {
-            Reservaciones Reservaciones = new Reservaciones();
+            Reservaciones reservaciones = new Reservaciones();
             try
             {
                 var encontrado = await contexto.Reservaciones.FindAsync(id);
@@ -89,21 +89,26 @@ namespace SweetDreams.Api.Controllers
                 if (encontrado.Accesibilidad == false)
                     return new Reservaciones();
                 else
-                    Reservaciones = encontrado;
+                    reservaciones = encontrado;
             }
             catch (Exception)
             {
                 throw;
             }
-            return Reservaciones;
+            return reservaciones;
         }
 
-        private async Task<ActionResult<bool>> Modificar([FromBody] Reservaciones Reservaciones)
+        private async Task<ActionResult<bool>> Modificar([FromBody] Reservaciones reservaciones)
         {
             bool modificar = false;
             try
             {
-                contexto.Reservaciones.Update(Reservaciones);
+                contexto.Database.ExecuteSqlRaw($"Delete FROM ReservacionesDetalle Where ReservacionId={reservaciones.ReservacionId}");
+                foreach(var item in reservaciones.ReservacionDetalle)
+                {
+                    contexto.Entry(item).State = EntityState.Added;
+                }
+                contexto.Entry(reservaciones).State = EntityState.Modified;
                 modificar = await contexto.SaveChangesAsync() > 0;
             }
             catch (Exception)
@@ -118,7 +123,7 @@ namespace SweetDreams.Api.Controllers
             bool existe;
             try
             {
-                existe = contexto.Reservaciones.Any(a => a.ReservacionesId == id);
+                existe = contexto.Reservaciones.Any(a => a.ReservacionId == id);
             }
             catch (Exception)
             {
@@ -128,12 +133,12 @@ namespace SweetDreams.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<bool>> Guardar(Reservaciones Reservaciones)
+        public async Task<ActionResult<bool>> Guardar(Reservaciones reservaciones)
         {
-            if (Existe(Reservaciones.ReservacionesId))
-                return await Modificar(Reservaciones);
+            if (Existe(reservaciones.ReservacionId))
+                return await Modificar(reservaciones);
             else
-                return await Insertar(Reservaciones);
+                return await Insertar(reservaciones);
         }
     }
 }
