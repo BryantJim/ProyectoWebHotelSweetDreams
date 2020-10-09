@@ -28,7 +28,7 @@ namespace SweetDreams.Api.Controllers
             try
             {
                 Lista = await contexto.Habitacion.Where(h => h.Accesibilidad == true).ToListAsync();
-                //Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
+                Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
             {
