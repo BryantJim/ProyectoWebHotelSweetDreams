@@ -1,0 +1,100 @@
+﻿@page "/CClientes"
+
+@using Models
+@using System.Net.Http
+
+@inject HttpClient Http
+@inject IToastService toast
+
+<div class="card-img">
+    <div class="card-header">
+        <h1>Consulta de Clientes</h1>
+    </div>
+
+    <div class="card-body">
+        <form>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Filtro</label>
+                    <select class="form-control" @bind="Filtro">
+                        <option value="0">Todo</option>
+                        <option value="1">Ncf Id</option>
+                        <option value="2">TipoNcfId</option>
+                        <option value="3">Secuencia</option>
+                        <option value="4">Limite</option>
+                        <option value="5">Reorden</option>
+                    </select>
+                </div>
+                &nbsp;
+                <div class="form-group">
+                    <label>Criterio</label>
+                    <div class="input-group">
+                        <input type="text" @bind="Criterio" class="form-control">
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => Consultar())"><i class="oi oi-list-rich" /> Consultar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive text-nowrap">
+                <table class="table table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Cliente Id</th>
+                            <th>Nombres</th>
+                            <th>Telefono</th>
+                            <th>Nombre de Usuario</th>
+                            <th>Correo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        @foreach (var item in ListaClientes)
+                        {
+                            <tr>
+                                <td>@item.ClienteId</td>
+                                <td>@item.Nombres</td>
+                                <td>@item.Telefono</td>
+                                <td>@item.NombreUsuario</td>
+                                <td>@item.Correo</td>
+                                <td><a href="@($"RClientes/{item.ClienteId}")">Mostrar</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </form>
+    </div>
+</div>
+
+@code
+{
+    private List<Clientes> ListaClientes { get; set; }
+
+    public string Filtro { get; set; }
+
+    public string Criterio { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+    }
+
+    private void Nuevo()
+    {
+        ListaClientes = new List<Clientes>();
+        Filtro = "0";
+        Criterio = string.Empty;
+    }
+
+    public async Task Consultar()
+    {
+        int id;
+        int.TryParse(Criterio, out id);
+
+        ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
+
+        id = 8;
+    }
+}

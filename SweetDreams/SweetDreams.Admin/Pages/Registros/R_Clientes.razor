@@ -1,4 +1,5 @@
-﻿@page "/RegistroCliente"
+﻿@page "/RClientes"
+@page "/RClientes/{Id:int}"
 
 @using Models
 @using System.IO
@@ -16,31 +17,31 @@
         <div class="card-body">
             <form>
 
-                @*ClienteId
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Cliente ID:</label>
-                                <div class="input-group">
-                                    <InputNumber @bind-Value="cliente.ClienteId" class="form-control col-4" />
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
-                                    </div>
+                @*ClienteId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Cliente Id</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="cliente.ClienteId" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <a href="@("CClientes")" class="btn btn-primary">Buscar</a>
                                 </div>
                             </div>
                         </div>
-                    </div>*@
+                    </div>
+                </div>
 
                 @*Nombre*@
                 <div class="form-group">
                     <label>Nombre:</label>
-                    <InputText @bind-Value="cliente.Nombre" class="form-control" />
+                    <InputText @bind-Value="cliente.Nombres" class="form-control" />
                 </div>
 
                 @*Numero de Teléfono*@
                 <div class="form-group">
                     <label>Numero de Teléfono:</label>
-                    <InputText @bind-Value="cliente.NumeroTelefono" class="form-control" />
+                    <InputText @bind-Value="cliente.Telefono" class="form-control" />
                 </div>
 
                 @*nombre de Usuario*@
@@ -58,7 +59,13 @@
                 @*Clave*@
                 <div class="form-group">
                     <label>Contraseña:</label>
-                    <InputText @bind-Value="cliente.Clave" class="form-control" />
+                    <input type="Password" @bind="cliente.Clave" class="form-control" />
+                </div>
+
+                @*Clave Confirmacion*@
+                <div class="form-group">
+                    <label>Contraseña:</label>
+                    <input type="Password" @bind="Confirmacion" class="form-control" />
                 </div>
             </form>
         </div>
@@ -73,22 +80,44 @@
 </EditForm>
 
 @code {
+    [Parameter]
+    public int Id { get; set; }
+
+    string Confirmacion { get; set; }
+
     private Clientes cliente = new Clientes();
 
-    protected void OnInitialize()
+    protected override async Task OnInitializedAsync()
     {
         Nuevo();
-        //await BuscarParametro();
+        await BuscarParametro();
+    }
+
+    private async Task BuscarParametro()
+    {
+
+        if (Id > 0)
+        {
+            var respuesta = await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{Id}");
+
+            if (respuesta != null)
+            {
+                cliente = respuesta;
+            }
+            else
+                toast.ShowError("No encontrado");
+        }
+
     }
 
     private async Task Buscar()
     {
-        var respuesta = await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{Clientes.clientesId}");
+        var respuesta = await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{cliente.ClienteId}");
 
-        if (respuesta.ReservacionId == 0)
+        if (respuesta.ClienteId == 0)
         {
             Nuevo();
-            toast.ShowWarning("Reservación no encontrada");
+            toast.ShowWarning("Cliente no encontrado");
         }
         else
         {
@@ -99,22 +128,46 @@
     private void Nuevo()
     {
         this.cliente = new Clientes();
+        Confirmacion = string.Empty;
     }
 
     private async Task Guardar()
     {
-        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
+        if (cliente.Clave == Confirmacion)
+        {
+            var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Clientes", cliente);
 
-        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+            var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+
+            if (estado)
+            {
+                toast.ShowSuccess("Guardado correctamente");
+                Nuevo();
+            }
+            else
+                toast.ShowError("Guardado incorrecto");
+        }
+        else
+        {
+            toast.ShowWarning("La Clave no coinciden");
+            Confirmacion = string.Empty;
+        }
+    }
+
+    private async Task Eliminar()
+    {
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{cliente.ClienteId}", cliente.ClienteId);
+
+        var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
 
         if (estado)
         {
-            toast.ShowSuccess("Guardado correctamente");
+            toast.ShowSuccess("Eliminado correctamente");
             Nuevo();
         }
         else
-            toast.ShowError("Guardado incorrecto");
-
+            toast.ShowError("No fue posible eliminar");
     }
 
 }
