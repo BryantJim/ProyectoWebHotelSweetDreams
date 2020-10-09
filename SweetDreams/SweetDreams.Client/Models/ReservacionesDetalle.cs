@@ -29,6 +29,10 @@ namespace SweetDreams.Client.Models
         [Range(minimum: 1, maximum: 100000000, ErrorMessage = "Debe ingresar al menos una habitacion")]
         public int CantidadHabitacion { get; set; }
 
+        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
+        public decimal Precio { get; set; }
+
+        public string Imagen { get; set; }
 
         public ReservacionesDetalle()
         {
@@ -38,9 +42,11 @@ namespace SweetDreams.Client.Models
             CNinos = 0;
             THabitacion = 0;
             CantidadHabitacion = 0;
+            Precio = 0;
+            Imagen = string.Empty;
         }
 
-        public ReservacionesDetalle(int reservacionId,int cAdultos, int cNinos, int tHabitacion, int cantidadHabitacion)
+        public ReservacionesDetalle(int reservacionId,int cAdultos, int cNinos, int tHabitacion, int cantidadHabitacion, decimal precio, string imagen)
         {
             DetalleId = 0;
             ReservacionId = reservacionId;
@@ -48,6 +54,8 @@ namespace SweetDreams.Client.Models
             CNinos = cNinos;
             THabitacion = tHabitacion;
             CantidadHabitacion = cantidadHabitacion;
+            Precio = precio;
+            Imagen = imagen;
         }
 
     }
