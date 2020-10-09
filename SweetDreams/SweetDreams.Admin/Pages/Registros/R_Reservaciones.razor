@@ -68,6 +68,7 @@
                             @for (int i = 0; i < ListaHabitacion.Count; i++)
                             {
                                 int index = i;
+                                Seleccion.Add(false);
                                 <tr>
                                     <td>@ListaHabitacion[i].NumeroHabitacion</td>
                                     <td>@ListaHabitacion[i].Tipo</td>
@@ -75,7 +76,7 @@
                                     <td>@ListaHabitacion[i].Precio</td>
                                     <td>@ListaHabitacion[i].Estado</td>
                                     <td><img src="@ListaHabitacion[i].Foto" style="height:80px;width:80px" /></td>
-                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Seleccionar(i))"> Seleccionar</button><input type="checkbox" @bind="Seleccion[i]" class="form-check-input col-1" /></td>
+                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Seleccionar(index))"> Seleccionar</button><input type="checkbox" readonly @bind="Seleccion[index]" class="form-check-input col-1" /></td>
                                 </tr>
                             }
                         </tbody>
@@ -179,7 +180,7 @@
     Habitacion habitacion = new Habitacion();
 
     private List<Habitacion> ListaHabitacion { get; set; }
-    private List<bool> Seleccion { get; set; }
+    public List<bool> Seleccion { get; set; }
 
     protected override void OnInitialized()
     {
@@ -235,15 +236,15 @@
 
     public void Seleccionar(int index)
     {
-        //for(int i = 0; i < Seleccion.Count(); i++)
-        //{
-        //    if (Seleccion[i] == true)
-        //        Seleccion[i] = false;
-        //}
+        for (int i = 0; i < Seleccion.Count(); i++)
+        {
+            if (Seleccion[i] == true)
+                Seleccion[i] = false;
+        }
 
-        //Seleccion[index] = true;
+        Seleccion[index] = true;
 
-        //habitacion = ListaHabitacion[index];
+        habitacion = ListaHabitacion[index];
     }
 
     private async Task Guardar()
