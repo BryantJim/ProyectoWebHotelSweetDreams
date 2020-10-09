@@ -5,11 +5,14 @@
 
 @using Models
 
+@inject HttpClient Http
+@*@inject IToastService toast*@
+
 <EditForm Model="Reservacion">
     <DataAnnotationsValidator />
 
-    <div class="card-img">
-        <div class="card-header bg-dark">
+    <div class="card">
+        <div class="card-header">
             <h3>Registro Reservaciones</h3>
         </div>
         <div class="card-body">
@@ -17,19 +20,19 @@
 
                 @*
 
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Id Compra:</label>
-                                <div class="input-group">
-                                    <InputNumber @bind-Value="Reservacion.ReservacionId" class="form-control col-4" />
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
-                                    </div>
-                                </div>
-                            </div>
+        <div class="form-row align-items-center">
+            <div class="col">
+                <div class="form-group">
+                    <label>Id Compra:</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Reservacion.ReservacionId" class="form-control col-4" />
+                        <div class="input-group-append">
+                            <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
 
                 *@
 
@@ -46,31 +49,34 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Cantidad de Adultos:</label>
+                    <select class="form-control" @bind="CAdultoSeleccionado">
+                        <option value="0" disabled selected>Seleccione un Articulo</option>
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Cantidad de Niños:</label>
+                    <select class="form-control" @bind="CNinoSeleccionado">
+                        <option value="0" disabled selected>Seleccione un Articulo</option>
+
+                    </select>
+                </div>
+
+                <div class="col">
+                    <label>Tipo de Habitacion:</label>
+                    <select class="form-control" @bind="THabitacionSeleccionado">
+                        <option value="0" disabled selected>Seleccione un Articulo</option>
+
+                    </select>
+                </div>
+
+
+                <div class="form-group">
                     <div class="form-row">
 
-                        <div class="col">
-                            <label>Cantidad de Adultos:</label>
-                            <select class="form-control" @bind="CAdultoSeleccionado">
-                                <option value="0" disabled selected>Seleccione un Articulo</option>
 
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <label>Cantidad de Niños:</label>
-                            <select class="form-control" @bind="CNinoSeleccionado">
-                                <option value="0" disabled selected>Seleccione un Articulo</option>
-
-                            </select>
-                        </div>
-
-                        <div class="col">
-                            <label>Tipo de Habitacion:</label>
-                            <select class="form-control" @bind="THabitacionSeleccionado">
-                                <option value="0" disabled selected>Seleccione un Articulo</option>
-
-                            </select>
-                        </div>
 
                         <div class="col">
                             <label>Cantidad de Habitaciones:</label>
@@ -91,10 +97,12 @@
                     <table class="table table-striped">
                         <thead class="thead-light">
                             <tr>
+                                <th>Imagen</th>
                                 <th>THabitacion</th>
                                 <th>Cantidad Habitacion</th>
                                 <th>Cantidad Adultos</th>
                                 <th>Cantidad Ninos</th>
+                                <th>Precio</th>
 
                             </tr>
                         </thead>
@@ -103,11 +111,12 @@
                             @foreach (var item in Reservacion.ReservacionesDetalle)
                             {
                                 <tr>
+                                    <td>@item.Imagen</td>
                                     <td>@item.THabitacion</td>
                                     <td>@item.CantidadHabitacion</td>
                                     <td>@item.CAdultos</td>
                                     <td>@item.CNinos</td>
-
+                                    <td>@item.Precio</td>
 
                                 </tr>
                             }
@@ -115,15 +124,15 @@
                     </table>
                 </div>
                 @*
-                    <div class="form-group">
-                        <label>Monto:</label>
-                        <InputNumber @bind-Value="Rese.Monto" class="form-control" readonly="true" />
-                        <ValidationMessage For="@(() => Compra.Monto)" />
-                    </div>
+        <div class="form-group">
+            <label>Monto:</label>
+            <InputNumber @bind-Value="Rese.Monto" class="form-control" readonly="true" />
+            <ValidationMessage For="@(() => Compra.Monto)" />
+        </div>
                 *@
             </form>
         </div>
-        <div class="card-footer bg-dark">
+        <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary"> <i class="oi oi-plus" />Nuevo</button>
                 <button type="submit" class="btn btn-lg btn-success"><i class="oi oi-hard-drive" />Guardar</button>
@@ -144,6 +153,7 @@
     public int Cantidad { get; set; }
 
     Reservaciones Reservacion = new Reservaciones();
+
 
 
 

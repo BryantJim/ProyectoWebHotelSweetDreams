@@ -27,6 +27,8 @@ namespace SweetDreams.Client.Models
         [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public string CodigoSeguridad { get; set; }
 
+        public decimal Balance { get; set; }
+
         [ForeignKey("ReservacionId")]
         public List<ReservacionesDetalle> ReservacionesDetalle { get; set; }
 
@@ -39,6 +41,9 @@ namespace SweetDreams.Client.Models
             NumeroTarjeta = string.Empty;
             FechaExpiracion = DateTime.Now;
             CodigoSeguridad = string.Empty;
+            Balance = 0;
+            ReservacionesDetalle = new List<ReservacionesDetalle>();
+
         }
     }
 }
