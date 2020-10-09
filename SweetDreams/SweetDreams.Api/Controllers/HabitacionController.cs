@@ -22,13 +22,13 @@ namespace SweetDreams.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Habitacion>>> GetList(Expression<Func<Habitacion,bool>>habitacion)
+        public async Task<ActionResult<IEnumerable<Habitacion>>> GetList()
         {
             List<Habitacion> Lista;
             try
             {
-                Lista = await contexto.Habitacion.Where(habitacion).ToListAsync();
-                Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
+                Lista = await contexto.Habitacion.Where(h => h.Accesibilidad == true).ToListAsync();
+                //Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
             {

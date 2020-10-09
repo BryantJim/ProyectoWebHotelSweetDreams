@@ -1,4 +1,5 @@
 ﻿@page "/RegistrarHabitacion"
+@page "/RegistrarHabitacion/{Id:int}"
 
 @using Models
 @using System.IO
@@ -20,11 +21,11 @@
                 <div class="form-row align-items-center">
                     <div class="col">
                         <div class="form-group">
-                            <label>Habitación Id</label>
+                            <label>Habitación Id</label>                                                                                     
                             <div class="input-group">
-                                <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />
+                                <InputNumber @bind-Value="habitacion.HabitacionId" class="form-control col-4" />                 
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar"><i class="oi oi-magnifying-glass" />Buscar</button>
+                                    <a href="@("CHabitacion")" class="btn btn-primary">Buscar</a>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +60,7 @@
                             }
                         </div>
                     </div>
-            </div>
+                </div>
 
                 @*Precio*@
                 <div class="form-group">
@@ -106,16 +107,24 @@
 @code {
     private Habitacion habitacion = new Habitacion();
 
+    [Parameter]
+    public int Id { get; set; }
+
+
     bool[] Elecciones = new bool[5];
     string[] Caracteristicas = new string[5];
 
-    protected override void OnInitialized()
+
+    protected override async Task OnInitializedAsync()
     {
         Caracteristicas[0] = "Una cama";
         Caracteristicas[1] = "Lavavo";
         Caracteristicas[2] = "Cama doble";
         Caracteristicas[3] = "Refrigerador";
         Caracteristicas[4] = "Amueblado";
+
+
+        await BuscarParametro();
     }
 
     async Task CargarFoto(IFileListEntry[] files)
@@ -135,6 +144,25 @@
                 habitacion.Foto = string.Format("data:image/jpg;base64,{0}", imageBase64Data);
             }
         }
+    }
+
+    private async Task BuscarParametro()
+    {
+
+        if (Id > 0)
+        {
+            var respuesta = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{Id}");
+
+            if(respuesta != null)
+            {
+                habitacion = respuesta;
+                AsigarCheckBox();
+
+            }
+            else
+                toast.ShowError("No encontrado");
+        }
+
     }
 
     private void Nuevo()
@@ -170,20 +198,20 @@
 
         for (int i = 0; i < 5; i++)
         {
-            if(i== 0)
+            if (i == 0)
                 habitacion.CaracteristicasSelecciones = habitacion.CaracteristicasSelecciones + Elecciones[i].ToString();
             else
                 habitacion.CaracteristicasSelecciones = habitacion.CaracteristicasSelecciones + "," + Elecciones[i].ToString();
 
             if (Elecciones[i] == true)
             {
-                if(algunSeleccionado == false)
+                if (algunSeleccionado == false)
                 {
                     habitacion.Caracteriscas = habitacion.Caracteriscas + Caracteristicas[i];
                     algunSeleccionado = true;
                 }
                 else
-                    habitacion.Caracteriscas = habitacion.Caracteriscas + ", " + Caracteristicas[i] ;
+                    habitacion.Caracteriscas = habitacion.Caracteriscas + ", " + Caracteristicas[i];
 
             }
         }
@@ -191,7 +219,7 @@
 
     private async Task Eliminar()
     {
-        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}",habitacion.HabitacionId);
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}", habitacion.HabitacionId);
 
         var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
 
@@ -226,7 +254,7 @@
         string[] subCadena = habitacion.CaracteristicasSelecciones.Split(',');
         int i = 0;
 
-        foreach(var cadena in subCadena)
+        foreach (var cadena in subCadena)
         {
             Elecciones[i] = Convert.ToBoolean(cadena);
             i++;

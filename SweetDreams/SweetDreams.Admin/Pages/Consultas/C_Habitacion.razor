@@ -62,17 +62,18 @@
                 </div>
             </div>
 
-            <div class="table-responsive text-nowrap" style="position: relative; height:200px; overflow: auto; display: block;">
+            <div class="table-responsive text-nowrap">
                 <table class="table table-striped">
                     <thead class="thead-light">
                         <tr>
-                            <th>Ncf Id</th>
-                            <th>TipoNcf Id</th>
-                            <th>Secuencia</th>
-                            <th>Limite</th>
-                            <th>Reorden</th>
-                            <th>Vence</th>
-
+                            <th>Habitación ID</th>
+                            <th>Numero Habitación</th>
+                            <th>Tipo</th>
+                            <th>Caracteriscas</th>
+                            <th>Precio</th>
+                            <th>Estado</th>
+                            <th>Foto</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
@@ -85,8 +86,8 @@
                             <td>@item.Caracteriscas</td>
                             <td>@item.Precio</td>
                             <td>@item.Estado</td>
-                            <td>@item.Accesibilidad</td>
-                            <td><a href="#">Mostrar</a></td>
+                            <td><img src="@item.Foto" style="height:80px;width:80px" /></td>
+                            <td><a href="@($"RegistrarHabitacion/{item.HabitacionId}")">Mostrar</a></td>
                         </tr>
                         }
                     </tbody>
