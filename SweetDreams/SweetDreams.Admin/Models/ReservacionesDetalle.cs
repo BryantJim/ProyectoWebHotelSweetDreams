@@ -14,6 +14,7 @@ namespace SweetDreams.Admin.Models
         public int CantidadNinos { get; set; }
         public string Tipo { get; set; }
         public decimal Precio { get; set; }
+        public int HabitacionId { get; set; }
 
         public ReservacionesDetalle()
         {

@@ -17,5 +17,8 @@ namespace SweetDreams.Api.Models.Administrador
         public int CantidadNinos { get; set; }
         public string Tipo { get; set; }
         public decimal Precio { get; set; }
+
+        [ForeignKey("HabitacionId")]
+        public int HabitacionId { get; set; }
     }
 }

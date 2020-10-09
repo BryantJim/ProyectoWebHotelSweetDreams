@@ -75,7 +75,8 @@ namespace SweetDreams.Api.Migrations
                     CantidadAdultos = table.Column<int>(nullable: false),
                     CantidadNinos = table.Column<int>(nullable: false),
                     Tipo = table.Column<string>(nullable: true),
-                    Precio = table.Column<decimal>(nullable: false)
+                    Precio = table.Column<decimal>(nullable: false),
+                    HabitacionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

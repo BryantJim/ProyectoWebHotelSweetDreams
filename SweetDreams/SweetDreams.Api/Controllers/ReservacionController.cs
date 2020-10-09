@@ -82,7 +82,7 @@ namespace SweetDreams.Api.Controllers
             Reservaciones reservaciones = new Reservaciones();
             try
             {
-                var encontrado = await contexto.Reservaciones.FindAsync(id);
+                var encontrado = await contexto.Reservaciones.Where(r => r.ReservacionId == id).Include(r => r.ReservacionDetalle).FirstOrDefaultAsync();
 
                 if (encontrado == null)
                     return new Reservaciones();

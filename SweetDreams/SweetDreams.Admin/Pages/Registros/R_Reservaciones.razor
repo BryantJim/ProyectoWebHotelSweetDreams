@@ -76,7 +76,7 @@
                                     <td>@ListaHabitacion[i].Precio</td>
                                     <td>@ListaHabitacion[i].Estado</td>
                                     <td><img src="@ListaHabitacion[i].Foto" style="height:80px;width:80px" /></td>
-                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Seleccionar(index))"> Seleccionar</button><input type="checkbox" readonly @bind="Seleccion[index]" class="form-check-input col-1" /></td>
+                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Seleccionar(index))"> Seleccionar</button><input type="checkbox" disabled @bind="Seleccion[index]" class="form-check-input col-1" /></td>
                                 </tr>
                             }
                         </tbody>
@@ -120,6 +120,10 @@
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Agregar"> Agregar</button>
                 </div>
 
                 @*Detalle*@
@@ -173,7 +177,6 @@
 
     public int CantidadAdultoSeleccionado { get; set; }
     public int CantidadNinoSeleccionado { get; set; }
-    public int Cantidad { get; set; }
     public string Filtro { get; set; }
 
     Reservaciones reservacion = new Reservaciones();
@@ -245,6 +248,42 @@
         Seleccion[index] = true;
 
         habitacion = ListaHabitacion[index];
+    }
+
+    public void Agregar()
+    {
+        if (habitacion.HabitacionId == 0)
+        {
+            toast.ShowInfo("Debe seleccionar una habitación");
+            return;
+        }
+
+        if (CantidadAdultoSeleccionado < 1)
+        {
+            toast.ShowInfo("Debe seleccionar como minimo un adulto");
+            return;
+        }
+
+        reservacion.ReservacionDetalle.Add(new ReservacionesDetalle
+        {
+            DetalleId = 0,
+            ReservacionId = reservacion.ReservacionId,
+            NumeroHabitacion = habitacion.NumeroHabitacion,
+            CantidadAdultos = CantidadAdultoSeleccionado,
+            CantidadNinos = CantidadNinoSeleccionado,
+            Tipo = habitacion.Tipo,
+            Precio = habitacion.Precio,
+            HabitacionId = habitacion.HabitacionId
+        });
+
+        reservacion.Balance += habitacion.Precio;
+
+        habitacion = new Habitacion();
+        for (int i = 0; i < Seleccion.Count(); i++)
+        {
+            if (Seleccion[i] == true)
+                Seleccion[i] = false;
+        }
     }
 
     private async Task Guardar()

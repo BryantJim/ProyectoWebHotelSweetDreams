@@ -129,6 +129,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<int>("CantidadNinos")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("HabitacionId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("NumeroHabitacion")
                         .HasColumnType("TEXT");
 
