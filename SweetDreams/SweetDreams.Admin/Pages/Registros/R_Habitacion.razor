@@ -44,10 +44,22 @@
                 </div>
 
                 @*Características*@
-                <div class="form-group">
-                    <label>Características</label>
-                    <InputText @bind-Value="habitacion.Caracteriscas" class="form-control" />
-                </div>
+                <div class="card">
+                    <h5 class="card-header">Características</h5>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                int index = i;
+
+                                <div class="form-group form-inline">
+                                    <label>@Caracteristicas[index]</label>
+                                    <input type="checkbox" @bind="Elecciones[index]" class="form-check-input col-1" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+            </div>
 
                 @*Precio*@
                 <div class="form-group">
@@ -94,6 +106,18 @@
 @code {
     private Habitacion habitacion = new Habitacion();
 
+    bool[] Elecciones = new bool[5];
+    string[] Caracteristicas = new string[5];
+
+    protected override void OnInitialized()
+    {
+        Caracteristicas[0] = "Una cama";
+        Caracteristicas[1] = "Lavavo";
+        Caracteristicas[2] = "Cama doble";
+        Caracteristicas[3] = "Refrigerador";
+        Caracteristicas[4] = "Amueblado";
+    }
+
     async Task CargarFoto(IFileListEntry[] files)
     {
         var file = files.FirstOrDefault();
@@ -116,10 +140,13 @@
     private void Nuevo()
     {
         habitacion = new Habitacion();
+        Elecciones = new bool[5];
     }
 
     private async Task Guardar()
     {
+        AsignarCaracteristicas();
+
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
 
         var estado = await guardado.Content.ReadFromJsonAsync<bool>();
@@ -132,6 +159,34 @@
         else
             toast.ShowError("Guardado incorrecto");
 
+    }
+
+    private void AsignarCaracteristicas()
+    {
+        bool algunSeleccionado = false;
+
+        habitacion.CaracteristicasSelecciones = string.Empty;
+        habitacion.Caracteriscas = string.Empty;
+
+        for (int i = 0; i < 5; i++)
+        {
+            if(i== 0)
+                habitacion.CaracteristicasSelecciones = habitacion.CaracteristicasSelecciones + Elecciones[i].ToString();
+            else
+                habitacion.CaracteristicasSelecciones = habitacion.CaracteristicasSelecciones + "," + Elecciones[i].ToString();
+
+            if (Elecciones[i] == true)
+            {
+                if(algunSeleccionado == false)
+                {
+                    habitacion.Caracteriscas = habitacion.Caracteriscas + Caracteristicas[i];
+                    algunSeleccionado = true;
+                }
+                else
+                    habitacion.Caracteriscas = habitacion.Caracteriscas + ", " + Caracteristicas[i] ;
+
+            }
+        }
     }
 
     private async Task Eliminar()
@@ -159,7 +214,22 @@
             toast.ShowWarning("Habitación no encontrada");
         }
         else
+        {
             habitacion = respuesta;
+            AsigarCheckBox();
+        }
 
+    }
+
+    private void AsigarCheckBox()
+    {
+        string[] subCadena = habitacion.CaracteristicasSelecciones.Split(',');
+        int i = 0;
+
+        foreach(var cadena in subCadena)
+        {
+            Elecciones[i] = Convert.ToBoolean(cadena);
+            i++;
+        }
     }
 }

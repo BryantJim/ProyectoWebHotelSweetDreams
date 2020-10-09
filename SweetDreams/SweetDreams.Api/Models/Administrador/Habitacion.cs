@@ -12,6 +12,7 @@ namespace SweetDreams.Api.Models.Administrador
         public int HabitacionId { get; set; }
         public string NumeroHabitacion { get; set; }
         public string Tipo { get; set; }
+        public string CaracteristicasSelecciones { get; set; }
         public string Caracteriscas { get; set; }
         public decimal Precio { get; set; }
         public string Foto { get; set; }
