@@ -17,57 +17,48 @@
         </div>
         <div class="card-body">
             <form>
-
-                @*
-
-                    <div class="form-row align-items-center">
-                        <div class="col">
-                            <div class="form-group">
-                                <label>Id Compra:</label>
-                                <div class="input-group">
-                                    <InputNumber @bind-Value="Reservacion.ReservacionId" class="form-control col-4" />
-                                    <div class="input-group-append">
-                                        <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
-                                    </div>
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Id Compra:</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="reservacion.ReservacionId" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                *@
+                </div>
 
                 <div class="form-group">
                     <label>Fecha Inicio:</label>
-                    <InputDate @bind-Value="Reservacion.FechaInicio" class="form-control" />
-                    <ValidationMessage For="@(() => Reservacion.FechaInicio)" />
+                    <InputDate @bind-Value="reservacion.FechaInicio" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaInicio)" />
                 </div>
 
                 <div class="form-group">
                     <label>Fecha Salida:</label>
-                    <InputDate @bind-Value="Reservacion.FechaSalida" class="form-control" />
-                    <ValidationMessage For="@(() => Reservacion.FechaSalida)" />
+                    <InputDate @bind-Value="reservacion.FechaSalida" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaSalida)" />
                 </div>
 
                 <div class="form-group">
                     <label>Cantidad de Adultos:</label>
-                    <select class="form-control" @bind="CAdultoSeleccionado">
+                    <select class="form-control" @bind="CantidadAdultoSeleccionado">
                         <option value="0" disabled selected>Seleccione un Articulo</option>
-
+                        <option value="1">1</option>
+                        <option value="2">2</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Cantidad de Niños:</label>
-                    <select class="form-control" @bind="CNinoSeleccionado">
-                        <option value="0" disabled selected>Seleccione un Articulo</option>
-
-                    </select>
-                </div>
-
-                <div class="col">
-                    <label>Tipo de Habitacion:</label>
-                    <select class="form-control" @bind="THabitacionSeleccionado">
-                        <option value="0" disabled selected>Seleccione un Articulo</option>
+                    <select class="form-control" @bind="CantidadNinoSeleccionado">
+                        <option value="0">Ninguno</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
                     </select>
                 </div>
 
@@ -86,7 +77,7 @@
                         </thead>
                         @*Asignacion de los datos del Detalle*@
                         <tbody class="bg-light">
-                            @foreach (var item in Reservacion.ReservacionDetalle)
+                            @foreach (var item in reservacion.ReservacionDetalle)
                             {
                                 <tr>
                                     <td>@item.NumeroHabitacion</td>
@@ -121,14 +112,62 @@
 
 @code {
 
-    public int CAdultoSeleccionado { get; set; }
-    public int CNinoSeleccionado { get; set; }
-    public int THabitacionSeleccionado { get; set; }
+    public int CantidadAdultoSeleccionado { get; set; }
+    public int CantidadNinoSeleccionado { get; set; }
     public int Cantidad { get; set; }
 
-    Reservaciones Reservacion = new Reservaciones();
+    Reservaciones reservacion = new Reservaciones();
 
+    private void Nuevo()
+    {
+        reservacion = new Reservaciones();
+    }
 
+    private async Task Buscar()
+    {
+        var respuesta = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}");
 
+        if (respuesta.HabitacionId == 0)
+        {
+            Nuevo();
+            toast.ShowWarning("Habitación no encontrada");
+        }
+        else
+        {
+            habitacion = respuesta;
+            AsigarCheckBox();
+        }
 
+    }
+
+    private async Task Guardar()
+    {
+        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", Reservaciones);
+
+        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            toast.ShowSuccess("Guardado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("Guardado incorrecto");
+
+    }
+
+    private async Task Eliminar()
+    {
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{habitacion.HabitacionId}", habitacion.HabitacionId);
+
+        var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            toast.ShowSuccess("Eliminado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
 }
