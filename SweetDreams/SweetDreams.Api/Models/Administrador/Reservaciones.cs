@@ -17,6 +17,7 @@ namespace SweetDreams.Api.Models.Administrador
         public string Tarjeta { get; set; }
         public string Codigo { get; set; }
         public decimal Balance { get; set; }
+        public bool Accesibilidad { get; set; }
 
         [ForeignKey("ReservacionId")]
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
