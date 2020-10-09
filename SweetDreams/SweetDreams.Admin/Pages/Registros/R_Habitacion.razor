@@ -41,7 +41,12 @@
                 @*Tipo*@
                 <div class="form-group">
                     <label>Tipo</label>
-                    <InputText @bind-Value="habitacion.Tipo" class="form-control" />
+                    <select class="form-control" @bind="habitacion.Tipo">
+                        <option value="Individual">Individual</option>
+                        <option value="Doble">Doble</option>
+                        <option value="Suite Máster">Suite Máster</option>
+                        <option value="Suite Junior">Suite Junior</option>
+                    </select>
                 </div>
 
                 @*Características*@
@@ -106,6 +111,8 @@
 
 @code {
     private Habitacion habitacion = new Habitacion();
+
+    public string Filtro { get; set; }
 
     [Parameter]
     public int Id { get; set; }
