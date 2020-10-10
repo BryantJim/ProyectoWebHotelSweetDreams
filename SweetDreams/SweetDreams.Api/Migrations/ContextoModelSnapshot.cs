@@ -97,6 +97,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Codigo")
                         .HasColumnType("TEXT");
 
