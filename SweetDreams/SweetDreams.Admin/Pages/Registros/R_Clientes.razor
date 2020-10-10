@@ -157,7 +157,7 @@
 
     private async Task Eliminar()
     {
-        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Habitacion/{cliente.ClienteId}", cliente.ClienteId);
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Clientes/{cliente.ClienteId}", cliente.ClienteId);
 
         var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
 
