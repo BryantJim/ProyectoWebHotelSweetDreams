@@ -77,26 +77,29 @@ namespace SweetDreams.Api.Controllers
             return eliminado;
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Habitacion>> Buscar(int id)
+        [HttpGet("{criterio}")]
+        public async Task<ActionResult<IEnumerable<Habitacion>>> Buscar(Expression<Func<Habitacion,bool>>habitacion)
         {
-            Habitacion habitacion = new Habitacion();
+            List<Habitacion> Lista;
             try  
             {
-                var encontrado = await contexto.Habitacion.FindAsync(id);
+                /*var encontrado = await contexto.Habitacion.FindAsync(id);
 
                 if (encontrado == null)
                     return new Habitacion();
                 if (encontrado.Accesibilidad == false)
                     return new Habitacion();
                 else
-                    habitacion = encontrado;
+                    habitacion = encontrado;   */
+
+                Lista = await contexto.Habitacion.Where(habitacion).ToListAsync();
+                Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
             {
                 throw;
             }
-            return habitacion;
+            return Lista;
         }
 
         private async Task<ActionResult<bool>> Modificar([FromBody] Habitacion habitacion)
