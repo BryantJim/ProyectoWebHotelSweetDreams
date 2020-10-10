@@ -45,12 +45,12 @@
                 @*Clave*@
                 <div class="form-group">
                     <label>Contraseña:</label>
-                    <InputText @bind-Value="cliente.Clave" class="form-control" />
+                    <input type="password" @bind="cliente.Clave"  class="form-control" />
                 </div>
 
                 <div class="form-group">
                     <label>Confirmar contraseña:</label>
-                    <InputText @bind-Value="Confirmar" class="form-control" />
+                    <input type="password" @bind="cliente.Clave" class="form-control" />
                 </div>
 
             </form>
@@ -58,7 +58,7 @@
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Registrarse"> Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Cancelar"> Eliminar</button>
+                <a  class="btn btn-lg btn-danger oi oi-circle-x" href=""> Cancelar</a>
             </div>
         </div>
     </div>
@@ -126,8 +126,5 @@
 
     }
 
-    private void Cancelar()
-    {
-       
-    }
+    
 }
