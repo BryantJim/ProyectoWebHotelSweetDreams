@@ -27,7 +27,6 @@ namespace SweetDreams.Api.Controllers
             try
             {
                 Lista = await contexto.Clientes.Where(h => h.Accesibilidad == true).ToListAsync();
-                Lista = Lista.Where(h => h.Accesibilidad == true).ToList();
             }
             catch (Exception)
             {
@@ -59,12 +58,12 @@ namespace SweetDreams.Api.Controllers
             bool eliminado = false;
             try
             {
-                var Clientes = await contexto.Clientes.Where(d => d.ClienteId == id).SingleOrDefaultAsync();
+                var cliente = await contexto.Clientes.FindAsync(id);
 
-                if (Clientes != null)
+                if (cliente != null)
                 {
-                    Clientes.Accesibilidad = false;
-                    contexto.Clientes.Update(Clientes);
+                    cliente.Accesibilidad = false;
+                    contexto.Clientes.Update(cliente);
                     //contexto.Clientes.Remove(Clientes);
                     eliminado = (await contexto.SaveChangesAsync() > 0);
                 }
