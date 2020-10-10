@@ -30,7 +30,7 @@ namespace SweetDreams.Client.Models
         public decimal Balance { get; set; }
 
         [ForeignKey("ReservacionId")]
-        public List<ReservacionesDetalle> ReservacionesDetalle { get; set; }
+        public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
 
 
         public Reservaciones()
@@ -42,7 +42,7 @@ namespace SweetDreams.Client.Models
             FechaExpiracion = DateTime.Now;
             CodigoSeguridad = string.Empty;
             Balance = 0;
-            ReservacionesDetalle = new List<ReservacionesDetalle>();
+            ReservacionDetalle = new List<ReservacionesDetalle>();
 
         }
     }

@@ -2,13 +2,13 @@
 
 @using System.IO
 @using System.Net.Http
-
 @using Models
 
-@inject HttpClient Http
-@*@inject IToastService toast*@
 
-<EditForm Model="Reservacion">
+@inject HttpClient Http
+@inject IToastService toast
+
+<EditForm Model="reservacion">
     <DataAnnotationsValidator />
 
     <div class="card">
@@ -18,60 +18,100 @@
         <div class="card-body">
             <form>
 
+
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo Habitacion</label>
+                        <div class="input-group">
+                            <select class="form-control" @bind="Filtro">
+                                <option value="0">Todo</option>
+                                <option value="1">Individual</option>
+                                <option value="2">Doble</option>
+                                <option value="3">Suite Máster</option>
+                                <option value="4">Suite Junior</option>
+                            </select>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => Consultar())"><i class="oi oi-list-rich" /> Consultar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive text-nowrap">
+                    <table class="table table-striped">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>No. Habitación</th>
+                                <th>Tipo</th>
+                                <th>Caracteriscas</th>
+                                <th>Precio</th>
+                                <th>Estado</th>
+                                <th>Foto</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white">
+                            @for (int i = 0; i < ListaHabitacion.Count; i++)
+                            {
+                                int index = i;
+                                Seleccion.Add(false);
+                                <tr>
+                                    <td>@ListaHabitacion[i].NumeroHabitacion</td>
+                                    <td>@ListaHabitacion[i].Tipo</td>
+                                    <td>@ListaHabitacion[i].Caracteriscas</td>
+                                    <td>@ListaHabitacion[i].Precio</td>
+                                    <td>@ListaHabitacion[i].Estado</td>
+                                    <td><img src="@ListaHabitacion[i].Foto" style="height:80px;width:80px" /></td>
+                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Seleccionar(index))"> Seleccionar</button><input type="checkbox" disabled @bind="Seleccion[index]" class="form-check-input col-1" /></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @*Aqui termina la tabla para la seleccion de habitaciones*@
+
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+
                 <div class="form-group">
-                    <label>Fecha Entrada:</label>
-                    <InputDate @bind-Value="Reservacion.FechaInicio" class="form-control" />
-                    <ValidationMessage For="@(() => Reservacion.FechaInicio)" />
+                    <label>Fecha Inicio:</label>
+                    <InputDate @bind-Value="reservacion.FechaInicio" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaInicio)" />
                 </div>
 
                 <div class="form-group">
                     <label>Fecha Salida:</label>
-                    <InputDate @bind-Value="Reservacion.FechaSalida" class="form-control" />
-                    <ValidationMessage For="@(() => Reservacion.FechaSalida)" />
+                    <InputDate @bind-Value="reservacion.FechaSalida" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaSalida)" />
                 </div>
 
                 <div class="form-group">
                     <label>Cantidad de Adultos:</label>
-                    <select class="form-control" @bind="CAdultoSeleccionado">
-                        <option value="0" disabled selected>Seleccione un Articulo</option>
-
+                    <select class="form-control" @bind="CantidadAdultoSeleccionado">
+                        <option value="0" disabled selected>Seleccione una cantidad</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label>Cantidad de Niños:</label>
                     <select class="form-control" @bind="CNinoSeleccionado">
-                        <option value="0" disabled selected>Seleccione un Articulo</option>
-
+                        <option value="0">Ninguno</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
                     </select>
                 </div>
-
-                <div class="col">
-                    <label>Tipo de Habitacion:</label>
-                    <select class="form-control" @bind="THabitacionSeleccionado">
-                        <option value="0" disabled selected>Seleccione un Articulo</option>
-
-                    </select>
-                </div>
-
 
                 <div class="form-group">
-                    <div class="form-row">
-
-
-
-                        <div class="col">
-                            <label>Cantidad de Habitaciones:</label>
-                            <div class="input-group">
-                                <InputNumber @bind-Value="Cantidad" class="form-control" />
-                                <div class="input-group-append">
-                                    <button type="button" class="btn btn-info">Agregar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <button type="button" class="btn btn-lg btn-primary" @onclick="Agregar"> Agregar</button>
                 </div>
-
 
                 @*Detalle*@
                 @*La Tabla*@
@@ -79,76 +119,168 @@
                     <table class="table table-striped">
                         <thead class="thead-light">
                             <tr>
-                                <th>Imagen</th>
-                                <th>THabitacion</th>
-                                <th>Cantidad Habitacion</th>
+                                <th>No. Habitación</th>
+                                <th>Tipo de Habitación</th>
                                 <th>Cantidad Adultos</th>
-                                <th>Cantidad Ninos</th>
+                                <th>Cantidad Niños</th>
                                 <th>Precio</th>
-
                             </tr>
                         </thead>
                         @*Asignacion de los datos del Detalle*@
                         <tbody class="bg-light">
-                            @foreach (var item in Reservacion.ReservacionesDetalle)
+                            @foreach (var item in reservacion.ReservacionDetalle)
                             {
                                 <tr>
-                                    <td>@item.Imagen</td>
+                                    <td>@item.NumeroHabitacion</td>
                                     <td>@item.THabitacion</td>
-                                    <td>@item.CantidadHabitacion</td>
                                     <td>@item.CAdultos</td>
                                     <td>@item.CNinos</td>
                                     <td>@item.Precio</td>
-
                                 </tr>
                             }
                         </tbody>
                     </table>
-
                 </div>
 
                 <div class="form-group">
                     <label>Balance:</label>
-                    <InputNumber @bind-Value="Reservacion.Balance" class="form-control" readonly="true" />
-                    <ValidationMessage For="@(() => Reservacion.Balance)" />
+                    <InputNumber @bind-Value="reservacion.Balance" class="form-control" readonly="true" />
+                    <ValidationMessage For="@(() => reservacion.Balance)" />
                 </div>
-
-                <div class="form-group">
-                    <label>Fecha de Expiracion de la tarjeta:</label>
-                    <InputDate @bind-Value="Reservacion.FechaExpiracion" class="form-control" />
-                    <ValidationMessage For="@(() => Reservacion.FechaExpiracion)" />
-                </div>
-
-                <div class="form-group">
-                    <label>Código de Seguridad:</label>
-                    <InputText @bind-Value="Reservacion.CodigoSeguridad" class="form-control" readonly="true" />
-                    <ValidationMessage For="@(() => Reservacion.CodigoSeguridad)" />
-                </div>
-
-
             </form>
         </div>
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
-                <button type="submit" class="btn btn-lg btn-success"><i class="oi oi-hard-drive" />Registrar</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Registrar">Registrar</button>
+                <a class="btn btn-lg btn-danger oi oi-circle-x" href="">Cancelar</a>
             </div>
         </div>
     </div>
 
+
+
+ 
 </EditForm>
 
 
 
 @code {
 
-    public int CAdultoSeleccionado { get; set; }
+    public int CantidadAdultoSeleccionado { get; set; }
     public int CNinoSeleccionado { get; set; }
     public int THabitacionSeleccionado { get; set; }
     public int Cantidad { get; set; }
+    public string Filtro { get; set; }
 
-    Reservaciones Reservacion = new Reservaciones();
+    Reservaciones reservacion = new Reservaciones();
 
+    Habitacion habitacion = new Habitacion();
 
+    private List<Habitacion> ListaHabitacion { get; set; }
+    public List<bool> Seleccion { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+    }
+
+    private void Nuevo()
+    {
+        reservacion = new Reservaciones();
+        ListaHabitacion = new List<Habitacion>();
+        Seleccion = new List<bool>();
+    }
+
+    
+
+    public async Task Consultar()
+    {
+        ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+        ListaHabitacion = ListaHabitacion.Where(h => h.Estado == true).ToList();
+
+        switch (Filtro)
+        {
+            case "0":
+                break;
+            case "1":
+                ListaHabitacion = ListaHabitacion.Where(h => h.Tipo == "Individual").ToList();
+                break;
+            case "2":
+                ListaHabitacion = ListaHabitacion.Where(h => h.Tipo == "Doble").ToList();
+                break;
+            case "3":
+                ListaHabitacion = ListaHabitacion.Where(h => h.Tipo == "Suite Máster").ToList();
+                break;
+            case "4":
+                ListaHabitacion = ListaHabitacion.Where(h => h.Tipo == "Suite Junior").ToList();
+                break;
+        }
+    }
+
+    public void Seleccionar(int index)
+    {
+        for (int i = 0; i < Seleccion.Count(); i++)
+        {
+            if (Seleccion[i] == true)
+                Seleccion[i] = false;
+        }
+
+        Seleccion[index] = true;
+
+        habitacion = ListaHabitacion[index];
+    }
+
+    public void Agregar()
+    {
+        if (habitacion.HabitacionId == 0)
+        {
+            toast.ShowInfo("Debe seleccionar una habitación");
+            return;
+        }
+
+        if (CantidadAdultoSeleccionado < 1)
+        {
+            toast.ShowInfo("Debe seleccionar como minimo un adulto");
+            return;
+        }
+
+        reservacion.ReservacionDetalle.Add(new ReservacionesDetalle
+        {
+            DetalleId = 0,
+            ReservacionId = reservacion.ReservacionId,
+            NumeroHabitacion = habitacion.NumeroHabitacion,
+            CAdultos = CantidadAdultoSeleccionado,
+            CNinos = CNinoSeleccionado,
+            THabitacion = habitacion.Tipo,
+            Precio = habitacion.Precio,
+            HabitacionId = habitacion.HabitacionId
+        });
+
+        reservacion.Balance += habitacion.Precio;
+
+        habitacion = new Habitacion();
+        for (int i = 0; i < Seleccion.Count(); i++)
+        {
+            if (Seleccion[i] == true)
+                Seleccion[i] = false;
+        }
+    }
+
+    private async Task Registrar()
+    {
+        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Reservacion", reservacion);
+
+        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            toast.ShowSuccess("Guardado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("Guardado incorrecto");
+
+    }
 
 
 }
