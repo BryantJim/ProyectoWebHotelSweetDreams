@@ -45,6 +45,9 @@
                         <option value="0">Todo</option>
                         <option value="1">Habitación Id</option>
                         <option value="2">Número habitación</option>
+                        <option value="3">Tipo</option>
+                        <option value="4">Características</option>
+                        <option value="5">Precio</option>
                     </select>
                 </div>
                 &nbsp;
@@ -97,7 +100,6 @@
 @code
 {
     private List<Habitacion> ListaHabitacion { get; set; }
-    private List<Habitacion> ListaAux { get; set; }
 
     private DateTime Desde { get; set; } = DateTime.Now;
     private DateTime Hasta { get; set; } = DateTime.Now;
@@ -107,10 +109,9 @@
 
     public string Criterio { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         Nuevo();
-        ListaAux = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
     }
 
 
@@ -121,35 +122,79 @@
         Criterio = string.Empty;
     }
 
-    private void Consultar()
+    private async Task Consultar()
     {
         switch (Filtro)
         {
             case "0":
-                ListaHabitacion = ListaAux;
+                ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                 break;
             case "1":
                 int id;
                 int.TryParse(Criterio, out id);
                 if(Criterio.Length > 0)
                 {
-                    ListaHabitacion = ListaAux.Where(h => h.HabitacionId == id).ToList();
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => h.HabitacionId == id).ToList();
                     break;
                 }
                 else
                 {
-                    ListaHabitacion = ListaAux.Where(h => true).OrderBy(h => h.HabitacionId).ToList();
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.HabitacionId).ToList();
                     break;
                 }
             case "2":
                 if(Criterio.Length > 0)
                 {
-                    ListaHabitacion = ListaAux.Where(h => h.NumeroHabitacion.Contains(Criterio)).ToList();
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => h.NumeroHabitacion.Contains(Criterio)).ToList();
                     break;
                 }
                 else
                 {
-                    ListaHabitacion = ListaAux.Where(h => true).OrderBy(h => h.NumeroHabitacion).ToList();
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.NumeroHabitacion).ToList();
+                    break;
+                }
+            case "3":
+                if (Criterio.Length > 0)
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => h.Tipo.Contains(Criterio)).ToList();
+                    break;
+                }
+                else
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Tipo).ToList();
+                    break;
+                }
+            case "4":
+                if (Criterio.Length > 0)
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => h.Caracteriscas.Contains(Criterio)).ToList();
+                    break;
+                }
+                else
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Caracteriscas).ToList();
+                    break;
+                }
+            case "5":
+                decimal cantidad = Convert.ToDecimal(Criterio);
+                if (Criterio.Length > 0)
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => h.Precio == cantidad).ToList();
+                    break;
+                }
+                else
+                {
+                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+                    ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Precio).ToList();
                     break;
                 }
 
