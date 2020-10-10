@@ -18,6 +18,7 @@ namespace SweetDreams.Admin.Models
         public bool Accesibilidad { get; set; }
 
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
+        public int ClienteId { get; set; }
 
         public Reservaciones()
         {
