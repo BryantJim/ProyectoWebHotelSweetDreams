@@ -20,14 +20,14 @@
 
                 @*Nombre*@
                 <div class="form-group">
-                    <label>Nombre:</label>
-                    <InputText @bind-Value="cliente.Nombre" class="form-control" />
+                    <label>Nombres</label>
+                    <InputText @bind-Value="cliente.Nombres" class="form-control" />
                 </div>
 
                 @*Numero de Teléfono*@
                 <div class="form-group">
-                    <label>Numero de Teléfono:</label>
-                    <InputText @bind-Value="cliente.NumeroTelefono" class="form-control" />
+                    <label>Teléfono</label>
+                    <InputText @bind-Value="cliente.Telefono" class="form-control" />
                 </div>
 
                 @*nombre de Usuario*@
@@ -38,19 +38,19 @@
 
                 @*Correo*@
                 <div class="form-group">
-                    <label>Correo:</label>
+                    <label>Correo</label>
                     <InputText @bind-Value="cliente.Correo" class="form-control" />
                 </div>
 
                 @*Clave*@
                 <div class="form-group">
-                    <label>Contraseña:</label>
+                    <label>Contraseña</label>
                     <input type="password" @bind="cliente.Clave"  class="form-control" />
                 </div>
 
                 <div class="form-group">
-                    <label>Confirmar contraseña:</label>
-                    <input type="password" @bind="Confirmar" class="form-control" />
+                    <label>Confirmar contraseña</label>
+                    <input type="password" @bind="cliente.Clave" class="form-control" />
                 </div>
 
             </form>
@@ -70,29 +70,12 @@
     public int Id { get; set; }
 
     private Cliente cliente = new Cliente();
+
     public string Confirmar { get; set; }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         Nuevo();
-        await BuscarParametro();
-    }
-
-    private async Task BuscarParametro()
-    {
-
-        if (Id > 0)
-        {
-            var respuesta = await Http.GetFromJsonAsync<Cliente>($"http://localhost:5000/Api/Clientes/{Id}");
-
-            if (respuesta != null)
-            {
-                cliente = respuesta;
-            }
-            else
-                toast.ShowError("No encontrado");
-        }
-
     }
 
     private void Nuevo()
