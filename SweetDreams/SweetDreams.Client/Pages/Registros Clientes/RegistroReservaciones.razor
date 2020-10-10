@@ -18,26 +18,8 @@
         <div class="card-body">
             <form>
 
-                @*
-
-        <div class="form-row align-items-center">
-            <div class="col">
                 <div class="form-group">
-                    <label>Id Compra:</label>
-                    <div class="input-group">
-                        <InputNumber @bind-Value="Reservacion.ReservacionId" class="form-control col-4" />
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-                *@
-
-                <div class="form-group">
-                    <label>Fecha Inicio:</label>
+                    <label>Fecha Entrada:</label>
                     <InputDate @bind-Value="Reservacion.FechaInicio" class="form-control" />
                     <ValidationMessage For="@(() => Reservacion.FechaInicio)" />
                 </div>
@@ -122,21 +104,33 @@
                             }
                         </tbody>
                     </table>
+
                 </div>
-                @*
-        <div class="form-group">
-            <label>Monto:</label>
-            <InputNumber @bind-Value="Rese.Monto" class="form-control" readonly="true" />
-            <ValidationMessage For="@(() => Compra.Monto)" />
-        </div>
-                *@
+
+                <div class="form-group">
+                    <label>Balance:</label>
+                    <InputNumber @bind-Value="Reservacion.Balance" class="form-control" readonly="true" />
+                    <ValidationMessage For="@(() => Reservacion.Balance)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha de Expiracion de la tarjeta:</label>
+                    <InputDate @bind-Value="Reservacion.FechaExpiracion" class="form-control" />
+                    <ValidationMessage For="@(() => Reservacion.FechaExpiracion)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Código de Seguridad:</label>
+                    <InputText @bind-Value="Reservacion.CodigoSeguridad" class="form-control" readonly="true" />
+                    <ValidationMessage For="@(() => Reservacion.CodigoSeguridad)" />
+                </div>
+
+
             </form>
         </div>
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
-                <button type="button" class="btn btn-lg btn-primary"> <i class="oi oi-plus" />Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success"><i class="oi oi-hard-drive" />Guardar</button>
-                <button type="button" class="btn btn-lg btn-danger"><i class="oi oi-trash" />Eliminar</button>
+                <button type="submit" class="btn btn-lg btn-success"><i class="oi oi-hard-drive" />Registrar</button>
             </div>
         </div>
     </div>
