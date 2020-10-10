@@ -18,11 +18,10 @@
                     <label>Filtro</label>
                     <select class="form-control" @bind="Filtro">
                         <option value="0">Todo</option>
-                        <option value="1">Ncf Id</option>
-                        <option value="2">TipoNcfId</option>
-                        <option value="3">Secuencia</option>
-                        <option value="4">Limite</option>
-                        <option value="5">Reorden</option>
+                        <option value="1">ClienteId</option>
+                        <option value="1">Nombre</option>
+                        <option value="2">Nombre de Usuario</option>
+                        <option value="3">Correo</option>
                     </select>
                 </div>
                 &nbsp;
@@ -90,11 +89,35 @@
 
     public async Task Consultar()
     {
-        int id;
-        int.TryParse(Criterio, out id);
+        switch(Filtro)
+        {
+            case "0": //Todo
+                ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
+                break;
+            case "1"://ClienteId
+                if (Criterio.Trim().Length > 0)
+                {
+                    try
+                    {
+                        int id = Convert.ToInt32(Criterio);
+                        //ListaUsuarios = UsuariosBLL.GetList(u => u.UsuarioId == id);
+                        ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
+                    }
+                    catch (FormatException)
+                    {
+                        toast.ShowWarning("Ingrese un numero");
+                    }
+                }
+                else
+                {
+                    //ListaUsuarios = UsuariosBLL.GetList(u => true).OrderBy(u => u.UsuarioId).ToList();
+                }
+                break;
+        }
+
+        //int id;
+        //int.TryParse(Criterio, out id);
 
         ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-
-        id = 8;
     }
 }
