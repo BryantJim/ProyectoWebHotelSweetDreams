@@ -18,6 +18,7 @@ namespace SweetDreams.Admin.Models
         public bool Accesibilidad { get; set; }
 
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
+        public int ClienteId { get; set; }
 
         public Reservaciones()
         {
@@ -30,6 +31,7 @@ namespace SweetDreams.Admin.Models
             Balance = 0;
             ReservacionDetalle = new List<ReservacionesDetalle>();
             Accesibilidad = true;
+            ClienteId = 0;
         }
 
         public Reservaciones(int reservacionId, DateTime fechaInicio, DateTime fechaSalida, DateTime fechaExpiracion, string tarjeta, string codigo, decimal balance, List<ReservacionesDetalle> reservacionDetalle, bool accesabilidad)

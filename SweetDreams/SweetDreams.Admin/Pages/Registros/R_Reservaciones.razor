@@ -20,7 +20,7 @@
                 <div class="form-row align-items-center">
                     <div class="col">
                         <div class="form-group">
-                            <label>Id Compra:</label>
+                            <label>ReservacionId:</label>
                             <div class="input-group">
                                 <InputNumber @bind-Value="reservacion.ReservacionId" class="form-control col-4" />
                                 <div class="input-group-append">
@@ -31,13 +31,80 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label>ClienteId:</label>
+                    <select @bind="reservacion.ClienteId" class="form-control" >
+                        <option value="0" disabled selected> Seleccione una persona </option>
+                        @foreach (var item in ListaCliente)
+                        {
+                            <option value="@item.ClienteId">@item.Nombres</option>
+                        }
+                    </select>
+                </div>
+
+                @*Aqui comienza la tabla que mostrara los clientes*@
+
+                @*<div class="form-row">
+            <div class="form-group">
+                <label>Clientes</label>
+                <select class="form-control" @bind="FiltroCliente">
+                    <option value="0">Todo</option>
+                    <option value="1">ClienteId</option>
+                    <option value="2">Nombre</option>
+                    <option value="3">Nombre de Usuario</option>
+                    <option value="4">Correo</option>
+                </select>
+            </div>
+            &nbsp;
+            <div class="form-group">
+                <label>Criterio</label>
+                <div class="input-group">
+                    <input type="text" @bind="Criterio" class="form-control">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => ConsultarClientes())"><i class="oi oi-list-rich" /> Consultar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive text-nowrap">
+            <table class="table table-striped">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Cliente Id</th>
+                        <th>Nombres</th>
+                        <th>Telefono</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Correo</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white">
+                    @for (int i = 0; i < ListaCliente.Count; i++)
+                    {
+                        int index = i;
+                        <tr>
+                            <td>@ListaCliente[i].ClienteId</td>
+                            <td>@ListaCliente[i].Nombres</td>
+                            <td>@ListaCliente[i].Telefono</td>
+                            <td>@ListaCliente[i].NombreUsuario</td>
+                            <td>@ListaCliente[i].Correo</td>
+                            <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => SeleccionarCliente(index))"> Seleccionar</button><input type="checkbox" disabled @bind="SeleccionCliente[index]" class="form-check-input col-1" /></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>*@
+
+                @*Aqui termina la tabla para la seleccion de los clientes*@
+
                 @*Aqui comienza la tabla que mostrara las habitaciones*@
 
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tipo Habitacion</label>
                         <div class="input-group">
-                            <select class="form-control" @bind="Filtro">
+                            <select class="form-control" @bind="FiltroHabitacion">
                                 <option value="0">Todo</option>
                                 <option value="1">Individual</option>
                                 <option value="2">Doble</option>
@@ -45,7 +112,7 @@
                                 <option value="4">Suite Junior</option>
                             </select>
                             <div class="input-group-append">
-                                <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => Consultar())"><i class="oi oi-list-rich" /> Consultar</button>
+                                <button type="button" disabled="@DesabilitarConsultar" class="btn btn-primary input-group-text" @onclick="@(u => ConsultarHabitaciones())"><i class="oi oi-list-rich" /> Consultar</button>
                             </div>
                         </div>
                     </div>
@@ -177,24 +244,37 @@
 
     public int CantidadAdultoSeleccionado { get; set; }
     public int CantidadNinoSeleccionado { get; set; }
-    public string Filtro { get; set; }
+    public string FiltroCliente { get; set; }
+    public string FiltroHabitacion { get; set; }
 
     Reservaciones reservacion = new Reservaciones();
     Habitacion habitacion = new Habitacion();
 
     private List<Habitacion> ListaHabitacion { get; set; }
+    private List<Clientes> ListaCliente { get; set; }
+    public List<bool> SeleccionCliente { get; set; }
     public List<bool> Seleccion { get; set; }
 
-    protected override void OnInitialized()
+    public string Criterio { get; set; }
+
+    public bool DesabilitarConsultar { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        Nuevo();
+        await Nuevo();
     }
 
-    private void Nuevo()
+    private async Task Nuevo()
     {
         reservacion = new Reservaciones();
         ListaHabitacion = new List<Habitacion>();
+        ListaCliente = new List<Clientes>();
+        ListaCliente = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
         Seleccion = new List<bool>();
+        CantidadAdultoSeleccionado = 0;
+        CantidadNinoSeleccionado = 0;
+        DesabilitarConsultar = false;
+        Criterio = string.Empty;
     }
 
     private async Task Buscar()
@@ -203,22 +283,84 @@
 
         if (respuesta.ReservacionId == 0)
         {
-            Nuevo();
+            await Nuevo();
             toast.ShowWarning("Reservación no encontrada");
         }
         else
         {
             reservacion = respuesta;
+            //DesabilitarConsultar = true;
+            ListaCliente = new List<Clientes>();
+            ListaCliente.Add(await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{reservacion.ClienteId}"));
         }
 
     }
 
-    public async Task Consultar()
+    //public async Task ConsultarClientes()
+    //{
+    //    ListaCliente = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+
+    //    switch (FiltroCliente)
+    //    {
+    //        case "0"://Todo
+    //            break;
+    //        case "1"://ClienteId
+    //            if (Criterio.Trim().Length > 0)
+    //            {
+    //                try
+    //                {
+    //                    int id = Convert.ToInt32(Criterio);
+    //                    ListaCliente = ListaCliente.Where(c => c.ClienteId == id).ToList();
+    //                }
+    //                catch (FormatException)
+    //                {
+    //                    toast.ShowWarning("Ingrese un numero");
+    //                }
+    //            }
+    //            else
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => true).OrderBy(c => c.ClienteId).ToList();
+    //            }
+    //            break;
+    //        case "2"://Nombres
+    //            if (Criterio.Trim().Length > 0)
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => c.Nombres.Contains(Criterio)).ToList();
+    //            }
+    //            else
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => true).OrderBy(c => c.Nombres).ToList();
+    //            }
+    //            break;
+    //        case "3"://NombreUsuario
+    //            if (Criterio.Trim().Length > 0)
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => c.NombreUsuario.Contains(Criterio)).ToList();
+    //            }
+    //            else
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => true).OrderBy(c => c.NombreUsuario).ToList();
+    //            }
+    //            break;
+    //        case "4"://Correo
+    //            if (Criterio.Trim().Length > 0)
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => c.Correo.Contains(Criterio)).ToList();
+    //            }
+    //            else
+    //            {
+    //                ListaCliente = ListaCliente.Where(c => true).OrderBy(c => c.Correo).ToList();
+    //            }
+    //            break;
+    //    }
+    //}
+
+    public async Task ConsultarHabitaciones()
     {
         ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
         ListaHabitacion = ListaHabitacion.Where(h => h.Estado == true).ToList();
 
-        switch (Filtro)
+        switch (FiltroHabitacion)
         {
             case "0":
                 break;
@@ -248,6 +390,19 @@
         Seleccion[index] = true;
 
         habitacion = ListaHabitacion[index];
+    }
+
+    public void SeleccionarCliente(int index)
+    {
+        for (int i = 0; i < SeleccionCliente.Count(); i++)
+        {
+            if (SeleccionCliente[i] == true)
+                SeleccionCliente[i] = false;
+        }
+
+        SeleccionCliente[index] = true;
+
+        reservacion.ClienteId = ListaCliente[index].ClienteId;
     }
 
     public void Agregar()
@@ -295,7 +450,7 @@
         if (estado)
         {
             toast.ShowSuccess("Guardado correctamente");
-            Nuevo();
+            await Nuevo();
         }
         else
             toast.ShowError("Guardado incorrecto");
@@ -311,7 +466,7 @@
         if (estado)
         {
             toast.ShowSuccess("Eliminado correctamente");
-            Nuevo();
+            await Nuevo();
         }
         else
             toast.ShowError("No fue posible eliminar");

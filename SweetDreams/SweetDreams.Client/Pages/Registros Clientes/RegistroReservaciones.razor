@@ -147,6 +147,23 @@
                     <InputNumber @bind-Value="reservacion.Balance" class="form-control" readonly="true" />
                     <ValidationMessage For="@(() => reservacion.Balance)" />
                 </div>
+
+                <div class="form-group">
+                    <label>Tarjeta de Credito:</label>
+                    <InputText @bind-Value="reservacion.NumeroTarjeta" />
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha Expiracion:</label>
+                    <InputDate @bind-Value="reservacion.FechaExpiracion" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaExpiracion)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Codigo de Seguridad:</label>
+                    <InputText @bind-Value="reservacion.CodigoSeguridad" />
+                </div>
+
             </form>
         </div>
         <div class="card-footer">

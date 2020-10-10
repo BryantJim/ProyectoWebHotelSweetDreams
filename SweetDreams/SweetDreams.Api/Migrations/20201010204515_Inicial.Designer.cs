@@ -9,7 +9,7 @@ using SweetDreams.Api.DAL;
 namespace SweetDreams.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201009233932_Inicial")]
+    [Migration("20201010204515_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -98,6 +98,9 @@ namespace SweetDreams.Api.Migrations
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("ClienteId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("Codigo")
                         .HasColumnType("TEXT");

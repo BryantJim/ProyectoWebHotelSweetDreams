@@ -57,7 +57,8 @@ namespace SweetDreams.Api.Migrations
                     Tarjeta = table.Column<string>(nullable: true),
                     Codigo = table.Column<string>(nullable: true),
                     Balance = table.Column<decimal>(nullable: false),
-                    Accesibilidad = table.Column<bool>(nullable: false)
+                    Accesibilidad = table.Column<bool>(nullable: false),
+                    ClienteId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
