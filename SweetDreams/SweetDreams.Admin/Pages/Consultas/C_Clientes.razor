@@ -18,11 +18,10 @@
                     <label>Filtro</label>
                     <select class="form-control" @bind="Filtro">
                         <option value="0">Todo</option>
-                        <option value="1">Ncf Id</option>
-                        <option value="2">TipoNcfId</option>
-                        <option value="3">Secuencia</option>
-                        <option value="4">Limite</option>
-                        <option value="5">Reorden</option>
+                        <option value="1">ClienteId</option>
+                        <option value="1">Nombre</option>
+                        <option value="2">Nombre de Usuario</option>
+                        <option value="3">Correo</option>
                     </select>
                 </div>
                 &nbsp;
@@ -90,11 +89,79 @@
 
     public async Task Consultar()
     {
-        int id;
-        int.TryParse(Criterio, out id);
-
-        ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-
-        id = 8;
+        switch(Filtro)
+        {
+            case "0": //Todo
+                ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
+                break;
+            case "1"://ClienteId
+                if (Criterio.Trim().Length > 0)
+                {
+                    try
+                    {
+                        int id = Convert.ToInt32(Criterio);
+                        ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                        ListaClientes = ListaClientes.Where(c => c.ClienteId == id).ToList();
+                    }
+                    catch (FormatException)
+                    {
+                        toast.ShowWarning("Ingrese un numero");
+                    }
+                }
+                else
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.ClienteId).ToList();
+                }
+                break;
+            case "2"://Nombres
+                if (Criterio.Trim().Length > 0)
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.Nombres.Contains(Criterio)).ToList();
+                }
+                else
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.Nombres).ToList();
+                }
+                break;
+            case "3"://Telefono
+                if (Criterio.Trim().Length > 0)
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.Telefono.Contains(Criterio)).ToList();
+                }
+                else
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.Telefono).ToList();
+                }
+                break;
+            case "4"://NombreUsuario
+                if (Criterio.Trim().Length > 0)
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.NombreUsuario.Contains(Criterio)).ToList();
+                }
+                else
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.NombreUsuario).ToList();
+                }
+                break;
+            case "5"://Correo
+                if (Criterio.Trim().Length > 0)
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.Correo.Contains(Criterio)).ToList();
+                }
+                else
+                {
+                    ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes/{Criterio}")).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.Correo).ToList();
+                }
+                break;
+        }
     }
 }
