@@ -27,6 +27,17 @@ namespace SweetDreams.Client.Models
         public string Clave { get; set; }
 
         public bool Accesibilidad { get; set; }
+
+        public Cliente()
+        {
+            ClienteId = 0;
+            Nombres = string.Empty;
+            NombreUsuario = string.Empty;
+            Telefono = string.Empty;
+            Correo = string.Empty;
+            Clave = string.Empty;
+            Accesibilidad = true;
+        }
     }
     
 }
