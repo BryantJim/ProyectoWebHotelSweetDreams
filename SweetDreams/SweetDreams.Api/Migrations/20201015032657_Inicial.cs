@@ -8,6 +8,25 @@ namespace SweetDreams.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Actividades",
+                columns: table => new
+                {
+                    ActividadId = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NombreActividad = table.Column<string>(nullable: true),
+                    Descripcion = table.Column<string>(nullable: true),
+                    Lugar = table.Column<string>(nullable: true),
+                    Fecha = table.Column<DateTime>(nullable: false),
+                    HoraInicio = table.Column<string>(nullable: true),
+                    HoraFinal = table.Column<string>(nullable: true),
+                    Accesibilidad = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Actividades", x => x.ActividadId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Clientes",
                 columns: table => new
                 {
@@ -98,6 +117,9 @@ namespace SweetDreams.Api.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Actividades");
+
             migrationBuilder.DropTable(
                 name: "Clientes");
 

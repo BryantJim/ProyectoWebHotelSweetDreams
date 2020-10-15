@@ -16,6 +16,38 @@ namespace SweetDreams.Api.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8");
 
+            modelBuilder.Entity("SweetDreams.Api.Models.Administrador.Actividades", b =>
+                {
+                    b.Property<int>("ActividadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Accesibilidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HoraFinal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HoraInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Lugar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreActividad")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ActividadId");
+
+                    b.ToTable("Actividades");
+                });
+
             modelBuilder.Entity("SweetDreams.Api.Models.Administrador.Clientes", b =>
                 {
                     b.Property<int>("ClienteId")

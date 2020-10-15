@@ -1,4 +1,5 @@
 ﻿@page "/RReservaciones"
+@page "/RReservaciones/{Id:int}"
 
 @using System.IO
 @using System.Net.Http
@@ -24,7 +25,7 @@
                             <div class="input-group">
                                 <InputNumber @bind-Value="reservacion.ReservacionId" class="form-control col-4" />
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
+                                    <a href="@("CReservaciones")" class="btn btn-primary">Buscar</a>
                                 </div>
                             </div>
                         </div>
@@ -33,7 +34,7 @@
 
                 <div class="form-group">
                     <label>ClienteId:</label>
-                    <select @bind="reservacion.ClienteId" class="form-control" >
+                    <select @bind="reservacion.ClienteId" class="form-control">
                         <option value="0" disabled selected> Seleccione una persona </option>
                         @foreach (var item in ListaCliente)
                         {
@@ -227,6 +228,22 @@
                     <InputNumber @bind-Value="reservacion.Balance" class="form-control" readonly="true" />
                     <ValidationMessage For="@(() => reservacion.Balance)" />
                 </div>
+
+                <div class="form-group">
+                    <label>Tarjeta de Credito:</label>
+                    <InputText @bind-Value="reservacion.Tarjeta" />
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha Expiracion:</label>
+                    <InputDate @bind-Value="reservacion.FechaExpiracion" class="form-control" />
+                    <ValidationMessage For="@(() => reservacion.FechaExpiracion)" />
+                </div>
+
+                <div class="form-group">
+                    <label>Codigo de Seguridad:</label>
+                    <InputText @bind-Value="reservacion.Codigo" />
+                </div>
             </form>
         </div>
         <div class="card-footer">
@@ -241,6 +258,9 @@
 </EditForm>
 
 @code {
+
+    [Parameter]
+    public int Id { get; set; }
 
     public int CantidadAdultoSeleccionado { get; set; }
     public int CantidadNinoSeleccionado { get; set; }
@@ -262,6 +282,28 @@
     protected override async Task OnInitializedAsync()
     {
         await Nuevo();
+        await BuscarParametro();
+    }
+
+    private async Task BuscarParametro()
+    {
+        if(Id > 0)
+        {
+            var respuesta = await Http.GetFromJsonAsync<Reservaciones>($"http://localhost:5000/Api/Reservacion/{Id}");
+
+            if (respuesta.ReservacionId == 0)
+            {
+                await Nuevo();
+                toast.ShowWarning("Reservación no encontrada");
+            }
+            else
+            {
+                reservacion = respuesta;
+                //DesabilitarConsultar = true;
+                ListaCliente = new List<Clientes>();
+                ListaCliente.Add(await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{reservacion.ClienteId}"));
+            }
+        }
     }
 
     private async Task Nuevo()
@@ -443,6 +485,8 @@
 
     private async Task Guardar()
     {
+        await ObtenerClienteUsuario();
+
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Reservacion", reservacion);
 
         var estado = await guardado.Content.ReadFromJsonAsync<bool>();
@@ -455,6 +499,14 @@
         else
             toast.ShowError("Guardado incorrecto");
 
+    }
+
+    private async Task ObtenerClienteUsuario()
+    {
+        var cliente = await Http.GetFromJsonAsync<Clientes>($"http://localhost:5000/Api/Clientes/{reservacion.ClienteId}");
+
+        reservacion.NombreCliente = cliente.Nombres;
+        reservacion.ClienteUsuario = cliente.NombreUsuario;
     }
 
     private async Task Eliminar()

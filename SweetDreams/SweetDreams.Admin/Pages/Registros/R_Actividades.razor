@@ -1,0 +1,165 @@
+﻿@page "/RActividades"
+@page "/RActividades/{Id:int}"
+
+@using Models
+@using System.IO
+@using System.Net.Http
+
+@inject HttpClient Http
+@inject IToastService toast
+@inject IJSRuntime JS
+
+<EditForm Model="actividad">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Actividades</h3>
+        </div>
+        <div class="card-body">
+            <form>
+
+                @*HabitaciónId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>Actividad Id</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="actividad.ActividadId" class="form-control col-4" />
+                                <div class="input-group-append">
+                                    <a href="@("CActividades")" class="btn btn-primary">Buscar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Nombre Actividad*@
+                <div class="form-group">
+                    <label>Nombre Actividad</label>
+                    <InputText @bind-Value="actividad.NombreActividad" class="form-control" />
+                </div>
+
+                @*Descripción*@
+                <div class="form-group">
+                    <label>Descripción</label>
+                    <InputText @bind-Value="actividad.Descripcion" class="form-control" />
+                </div>
+
+                @*Lugar*@
+                <div class="form-group">
+                    <label>Lugar</label>
+                    <InputText @bind-Value="actividad.Lugar" class="form-control" />
+                </div>
+
+                @*Fecha*@
+                <div class="form-group">
+                    <label>Fecha</label>
+                    <InputDate @bind-Value="actividad.Fecha" class="form-control" />
+                </div>
+
+                @*Hora Inicio*@
+                <div class="form-group">
+                    <label>Hora Inicio</label>
+                    <InputText @bind-Value="actividad.HoraInicio" class="form-control" />
+                </div>
+
+                @*Hora Final*@
+                <div class="form-group">
+                    <label>Hora Final</label>
+                    <InputText @bind-Value="actividad.HoraFinal" class="form-control" />
+                </div>
+
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Actividades actividad = new Actividades();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Nuevo();
+        await BuscarParametro();
+    }
+
+    private async Task BuscarParametro()
+    {
+
+        if (Id > 0)
+        {
+            var respuesta = await Http.GetFromJsonAsync<Actividades>($"http://localhost:5000/Api/Actividad/{Id}");
+
+            if (respuesta != null)
+            {
+                actividad = respuesta;
+            }
+            else
+                toast.ShowError("No encontrado");
+        }
+
+    }
+
+    private void Nuevo()
+    {
+        actividad = new Actividades();
+    }
+
+    private async Task Guardar()
+    {
+        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Actividad", actividad);
+
+        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            toast.ShowSuccess("Guardado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("Guardado incorrecto");
+
+    }
+
+    private async Task Eliminar()
+    {
+        var respuesta = await Http.PostAsJsonAsync($"http://localhost:5000/Api/Actividad/{actividad.ActividadId}", actividad.ActividadId);
+
+        var estado = await respuesta.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            toast.ShowSuccess("Eliminado correctamente");
+            Nuevo();
+        }
+        else
+            toast.ShowError("No fue posible eliminar");
+    }
+
+    private async Task Buscar()
+    {
+        var respuesta = await Http.GetFromJsonAsync<Actividades>($"http://localhost:5000/Api/Actividad/{actividad.ActividadId}");
+
+        if (respuesta.ActividadId == 0)
+        {
+            Nuevo();
+            toast.ShowWarning("Habitación no encontrada");
+        }
+        else
+        {
+            actividad = respuesta;
+        }
+
+    }
+}

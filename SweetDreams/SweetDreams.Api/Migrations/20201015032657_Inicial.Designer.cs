@@ -9,7 +9,7 @@ using SweetDreams.Api.DAL;
 namespace SweetDreams.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201010204515_Inicial")]
+    [Migration("20201015032657_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,38 @@ namespace SweetDreams.Api.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.8");
+
+            modelBuilder.Entity("SweetDreams.Api.Models.Administrador.Actividades", b =>
+                {
+                    b.Property<int>("ActividadId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("Accesibilidad")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Descripcion")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HoraFinal")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HoraInicio")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Lugar")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreActividad")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ActividadId");
+
+                    b.ToTable("Actividades");
+                });
 
             modelBuilder.Entity("SweetDreams.Api.Models.Administrador.Clientes", b =>
                 {

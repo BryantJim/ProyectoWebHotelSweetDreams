@@ -14,6 +14,7 @@ namespace SweetDreams.Api.DAL
         public DbSet<Habitacion> Habitacion { get; set; }
         public DbSet<Reservaciones> Reservaciones { get; set; }
         public DbSet<Clientes> Clientes { get; set; }
-        
+        public DbSet<Actividades> Actividades { get; set; }
+
     }
 }

@@ -19,6 +19,8 @@ namespace SweetDreams.Admin.Models
 
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
         public int ClienteId { get; set; }
+        public string NombreCliente { get; set; }
+        public string ClienteUsuario { get; set; }
 
         public Reservaciones()
         {

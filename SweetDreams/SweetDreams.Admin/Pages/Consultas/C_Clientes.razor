@@ -70,7 +70,6 @@
 @code
 {
     private List<Clientes> ListaClientes { get; set; }
-    private List<Clientes> ListaAux { get; set; }
 
     public string Filtro { get; set; }
 
@@ -90,10 +89,11 @@
 
     public async Task Consultar()
     {
-        switch(Filtro)
+        ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
+
+        switch (Filtro)
         {
             case "0": //Todo
-                ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
                 break;
             case "1"://ClienteId
                 if (Criterio.Trim().Length > 0)
@@ -101,8 +101,7 @@
                     try
                     {
                         int id = Convert.ToInt32(Criterio);
-                        ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                        ListaClientes = ListaAux.Where(c => c.ClienteId == id).ToList();
+                        ListaClientes = ListaClientes.Where(c => c.ClienteId == id).ToList();
                     }
                     catch (FormatException)
                     {
@@ -111,44 +110,37 @@
                 }
                 else
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => true).OrderBy(c => c.ClienteId).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.ClienteId).ToList();
                 }
                 break;
             case "2"://Nombres
                 if (Criterio.Trim().Length > 0)
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => c.Nombres.Contains(Criterio)).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.Nombres.Contains(Criterio)).ToList();
                 }
                 else
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => true).OrderBy(c => c.Nombres).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.Nombres).ToList();
                 }
                 break;
             case "3"://NombreUsuario
                 if (Criterio.Trim().Length > 0)
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => c.NombreUsuario.Contains(Criterio)).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.NombreUsuario.Contains(Criterio)).ToList();
                 }
                 else
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => true).OrderBy(c => c.NombreUsuario).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.NombreUsuario).ToList();
                 }
                 break;
             case "4"://Correo
                 if (Criterio.Trim().Length > 0)
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => c.Correo.Contains(Criterio)).ToList();
+                    ListaClientes = ListaClientes.Where(c => c.Correo.Contains(Criterio)).ToList();
                 }
                 else
                 {
-                    ListaAux = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
-                    ListaClientes = ListaAux.Where(c => true).OrderBy(c => c.Correo).ToList();
+                    ListaClientes = ListaClientes.Where(c => true).OrderBy(c => c.Correo).ToList();
                 }
                 break;
         }
