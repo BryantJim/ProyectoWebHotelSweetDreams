@@ -25,6 +25,7 @@ namespace SweetDreams.Admin.Models
             Fecha = DateTime.Now;
             HoraInicio = string.Empty;
             HoraFinal = string.Empty;
+            Accesibilidad = true;
         }
     }
 }

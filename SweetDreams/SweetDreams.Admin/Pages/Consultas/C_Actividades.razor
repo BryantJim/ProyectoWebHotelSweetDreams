@@ -1,4 +1,4 @@
-﻿@page "/CReservaciones"
+﻿@page "/CActividades"
 
 @using Models
 @using System.Net.Http
@@ -8,7 +8,7 @@
 
 <div class="card-img">
     <div class="card-header">
-        <h1>Consulta de Reservaciones</h1>
+        <h1>Consulta de Actividades</h1>
     </div>
 
     <div class="card-body">
@@ -18,7 +18,7 @@
                     <label>Filtrar por Fecha</label>
                     <select class="form-control" @bind="FiltroFecha">
                         <option value="0">Todo</option>
-                        <option value="1">Fecha Inicio</option>
+                        <option value="1">Fecha</option>
                     </select>
                 </div>
                 &nbsp;
@@ -43,10 +43,9 @@
                     <label>Filtro</label>
                     <select class="form-control" @bind="Filtro">
                         <option value="0">Todo</option>
-                        <option value="1">ReservacionId</option>
-                        <option value="2">ClienteId</option>
-                        <option value="3">Nombre de Cliente</option>
-                        <option value="3">Nombre de Cliente Usuario</option>
+                        <option value="1">ActividadId</option>
+                        <option value="2">Nombre Actividad</option>
+                        <option value="3">Lugar</option>
                     </select>
                 </div>
                 &nbsp;
@@ -65,28 +64,28 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                         <tr>
-                            <th>ReservacionId</th>
-                            <th>Nombre de Cliente</th>
-                            <th>Nombre de Cliente Usuario</th>
-                            <th>FechaInicio</th>
-                            <th>FechaSalida</th>
-                            <th>Tarjeta</th>
-                            <th>Balance</th>
+                            <th>ActividadId</th>
+                            <th>Nombre de Actividad</th>
+                            <th>Descripción</th>
+                            <th>Lugar</th>
+                            <th>Fecha</th>
+                            <th>Hora Inicio</th>
+                            <th>Hora Final</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody class="bg-white">
-                        @foreach (var item in ListaReservaciones)
+                        @foreach (var item in ListaActividades)
                         {
                             <tr>
-                                <td>@item.ReservacionId</td>
-                                <td>@item.NombreCliente</td>
-                                <td>@item.ClienteUsuario</td>
-                                <td>@item.FechaInicio</td>
-                                <td>@item.FechaSalida</td>
-                                <td>@item.Tarjeta</td>
-                                <td>@item.Balance</td>
-                                <td><a href="@($"RReservaciones/{item.ReservacionId}")">Mostrar</a></td>
+                                <td>@item.ActividadId</td>
+                                <td>@item.NombreActividad</td>
+                                <td>@item.Descripcion</td>
+                                <td>@item.Lugar</td>
+                                <td>@item.Fecha</td>
+                                <td>@item.HoraInicio</td>
+                                <td>@item.HoraFinal</td>
+                                <td><a href="@($"RActividades/{item.ActividadId}")">Mostrar</a></td>
                             </tr>
                         }
                     </tbody>
@@ -98,7 +97,7 @@
 
 @code
 {
-    private List<Reservaciones> ListaReservaciones { get; set; }
+    private List<Actividades> ListaActividades { get; set; }
 
     private DateTime Desde { get; set; } = DateTime.Now;
     private DateTime Hasta { get; set; } = DateTime.Now;
@@ -108,8 +107,6 @@
 
     public string Criterio { get; set; }
 
-    public string NombreCliente { get; set; }
-
 
     protected override void OnInitialized()
     {
@@ -118,7 +115,7 @@
 
     private void Nuevo()
     {
-        ListaReservaciones = new List<Reservaciones>();
+        ListaActividades = new List<Actividades>();
         Filtro = "0";
         FiltroFecha = "0";
         Criterio = string.Empty;
@@ -126,19 +123,19 @@
 
     public async Task Consultar()
     {
-        ListaReservaciones = (await Http.GetFromJsonAsync<Reservaciones[]>($"http://localhost:5000/Api/Reservacion")).ToList();
+        ListaActividades = (await Http.GetFromJsonAsync<Actividades[]>($"http://localhost:5000/Api/Actividad")).ToList();
 
         switch (Filtro)
         {
             case "0": //Todo
                 break;
-            case "1"://ReservacionId
+            case "1"://ActividadId
                 if (Criterio.Trim().Length > 0)
                 {
                     try
                     {
                         int id = Convert.ToInt32(Criterio);
-                        ListaReservaciones = ListaReservaciones.Where(r => r.ReservacionId == id).ToList();
+                        ListaActividades = ListaActividades.Where(a => a.ActividadId == id).ToList();
                     }
                     catch (FormatException)
                     {
@@ -147,45 +144,27 @@
                 }
                 else
                 {
-                    ListaReservaciones = ListaReservaciones.Where(r => true).OrderBy(r => r.ReservacionId).ToList();
+                    ListaActividades = ListaActividades.Where(a => true).OrderBy(a => a.ActividadId).ToList();
                 }
                 break;
-            case "2"://ClienteId
+            case "2"://Nombre Actividad
                 if (Criterio.Trim().Length > 0)
                 {
-                    try
-                    {
-                        int id = Convert.ToInt32(Criterio);
-                        ListaReservaciones = ListaReservaciones.Where(r => r.ClienteId == id).ToList();
-                    }
-                    catch (FormatException)
-                    {
-                        toast.ShowWarning("Ingrese un numero");
-                    }
+                    ListaActividades = ListaActividades.Where(a => a.NombreActividad.Contains(Criterio)).ToList();
                 }
                 else
                 {
-                    ListaReservaciones = ListaReservaciones.Where(r => true).OrderBy(r => r.ClienteId).ToList();
+                    ListaActividades = ListaActividades.Where(a => true).OrderBy(a => a.NombreActividad).ToList();
                 }
                 break;
-            case "3"://Nombre cliente
+            case "3"://Lugar
                 if (Criterio.Trim().Length > 0)
                 {
-                    ListaReservaciones = ListaReservaciones.Where(r => r.NombreCliente.Contains(Criterio)).ToList();
+                    ListaActividades = ListaActividades.Where(a => a.Lugar.Contains(Criterio)).ToList();
                 }
                 else
                 {
-                    ListaReservaciones = ListaReservaciones.Where(r => true).OrderBy(r => r.NombreCliente).ToList();
-                }
-                break;
-            case "4"://nombre cliente usuario
-                if (Criterio.Trim().Length > 0)
-                {
-                    ListaReservaciones = ListaReservaciones.Where(r => r.ClienteUsuario.Contains(Criterio)).ToList();
-                }
-                else
-                {
-                    ListaReservaciones = ListaReservaciones.Where(r => true).OrderBy(r => r.ClienteUsuario).ToList();
+                    ListaActividades = ListaActividades.Where(a => true).OrderBy(a => a.Lugar).ToList();
                 }
                 break;
         }
@@ -194,8 +173,8 @@
         {
             case "0": //Nada
                 break;
-            case "1": //Fecha Inicio
-                ListaReservaciones = ListaReservaciones.Where(r => r.FechaInicio >= Desde && r.FechaInicio <= Hasta).ToList();
+            case "1": //Fecha
+                ListaActividades = ListaActividades.Where(a => a.Fecha >= Desde && a.Fecha <= Hasta).ToList();
                 break;
         }
     }
