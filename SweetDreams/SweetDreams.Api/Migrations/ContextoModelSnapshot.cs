@@ -132,6 +132,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ClienteUsuario")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Codigo")
                         .HasColumnType("TEXT");
 
@@ -142,6 +145,9 @@ namespace SweetDreams.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaSalida")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCliente")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tarjeta")
