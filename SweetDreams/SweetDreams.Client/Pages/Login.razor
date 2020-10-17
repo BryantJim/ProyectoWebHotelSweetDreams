@@ -2,69 +2,73 @@
 
 @using System.Web;
 
-<AuthorizeView>
-    <Authorized>
-        <div class="card-img">
-            <div class="card-header row justify-content-md-center bg-dark">
-                <h1>Historia de la Empresa</h1>
+@*
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="card-img">
+                <div class="card-header row justify-content-md-center bg-dark">
+                    <h1>Historia de la Empresa</h1>
+                </div>
+                <div class="card-body text-center">
+                    <img src="../Resources/collage.jpg" style="width:50%; height:200px" />
+                </div>
+                <div class="card-footer bg-dark text-center">
+
+                    <p>
+                        Bienvenido a Sweet Dreams Hotel.
+                    </p>
+                </div>
             </div>
-            <div class="card-body text-center">
-                <img src="../Resources/collage.jpg" style="width:50%; height:200px" />
-            </div>
-            <div class="card-footer bg-dark text-center">
+        </Authorized>
+        <NotAuthorized>
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-signin my-5 bg-dark">
+                        <div class="card-header text-center">
+                            <img src="../Resources/lenteIcon.png" style="width:20%; height:80px" />
 
-                <p>
-                    Bienvenido a Sweet Dreams Hotel.
-                </p>
-            </div>
-        </div>
-    </Authorized>
-    <NotAuthorized>
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-signin my-5 bg-dark">
-                    <div class="card-header text-center">
-                        <img src="../Resources/lenteIcon.png" style="width:20%; height:80px" />
-
-                        <h3>Login</h3>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label>Nombre de usuario: </label>
-                            <input type="text" class="form-control" @bind="Usuario" />
-                        </div>
-                        <div class="form-group">
-                            <label>Contraseña: </label>
-                            <input type="password" class="form-control" @bind="Contrasena" />
+                            <h3>Login</h3>
                         </div>
 
-                    </div>
-                    <div class="card-footer">
-                        <div class="form-group text-center">
-                            <a class="ml-md-auto btn btn-success"
-                               href="/login?paramUsername=@encode(Usuario)&paramPassword=@encode(Contrasena)"
-                               target="_top">Login<span class="oi oi-account-login"></span></a>
-                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Nombre de usuario: </label>
+                                <input type="text" class="form-control" @bind="Usuario" />
+                            </div>
+                            <div class="form-group">
+                                <label>Contraseña: </label>
+                                <input type="password" class="form-control" @bind="Contrasena" />
+                            </div>
 
-                        <div class="form-group text-center">
-                            <a class="ml-md-auto btn oi oi-list" href="/RegistroCliente">Registrarse</a>
                         </div>
+                        <div class="card-footer">
+                            <div class="form-group text-center">
+                                <a class="ml-md-auto btn btn-success"
+                                   href="/login?paramUsername=@encode(Usuario)&paramPassword=@encode(Contrasena)"
+                                   target="_top">Login<span class="oi oi-account-login"></span></a>
+                            </div>
 
+                            <div class="form-group text-center">
+                                <a class="ml-md-auto btn oi oi-list" href="/RegistroCliente">Registrarse</a>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </NotAuthorized>
-</AuthorizeView>
+        </NotAuthorized>
+    </AuthorizeView>
 
-@code{
+    @code{
 
-    string Usuario = "";
-    string Contrasena = "";
+        string Usuario = "";
+        string Contrasena = "";
 
-    private string encode(string param)
-    {
-        return HttpUtility.UrlEncode(param);
+        private string encode(string param)
+        {
+            return HttpUtility.UrlEncode(param);
+        }
     }
-}
+
+*@
