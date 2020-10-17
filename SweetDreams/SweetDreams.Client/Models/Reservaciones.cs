@@ -9,44 +9,42 @@ namespace SweetDreams.Client.Models
 {
     public class Reservaciones
     {
-        [Key]
         public int ReservacionId { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public DateTime FechaInicio { get; set; }
-        
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public DateTime FechaSalida { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        public string NumeroTarjeta { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        public DateTime FechaExpiracion { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        public string CodigoSeguridad { get; set; }
-
         public decimal Balance { get; set; }
+        public string Tarjeta { get; set; }
+        public string Codigo { get; set; }
+        public DateTime FechaExpiracion { get; set; }
 
         public bool Accesibilidad { get; set; }
 
-        [ForeignKey("ReservacionId")]
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
-
-
 
         public Reservaciones()
         {
             ReservacionId = 0;
             FechaInicio = DateTime.Now;
             FechaSalida = DateTime.Now;
-            NumeroTarjeta = string.Empty;
             FechaExpiracion = DateTime.Now;
-            CodigoSeguridad = string.Empty;
+            Tarjeta = string.Empty;
+            Codigo = string.Empty;
             Balance = 0;
             ReservacionDetalle = new List<ReservacionesDetalle>();
             Accesibilidad = true;
+        }
+
+        public Reservaciones(int reservacionId, DateTime fechaInicio, DateTime fechaSalida, DateTime fechaExpiracion, string tarjeta, string codigo, decimal balance, List<ReservacionesDetalle> reservacionDetalle, bool accesabilidad)
+        {
+            ReservacionId = reservacionId;
+            FechaInicio = fechaInicio;
+            FechaSalida = fechaSalida;
+            FechaExpiracion = fechaExpiracion;
+            Tarjeta = tarjeta;
+            Codigo = codigo;
+            Balance = Balance;
+            ReservacionDetalle = reservacionDetalle;
+            Accesibilidad = accesabilidad;
         }
     }
 }

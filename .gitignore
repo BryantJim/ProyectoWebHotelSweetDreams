@@ -375,3 +375,5 @@ MigrationBackup/
 .ionide/
 
 # End of https://www.toptal.com/developers/gitignore/api/code,visualstudio,dotnetcore
+/SweetDreams/SweetDreams.Api/Data/Proyecto.db-shm
+/SweetDreams/SweetDreams.Api/Data/Proyecto.db-wal

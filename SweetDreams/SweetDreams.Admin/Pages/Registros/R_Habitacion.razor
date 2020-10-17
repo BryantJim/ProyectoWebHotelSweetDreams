@@ -114,6 +114,7 @@
 
     public string Filtro { get; set; }
 
+
     [Parameter]
     public int Id { get; set; }
 
@@ -188,6 +189,7 @@
 
         if (estado)
         {
+            habitacion.Estado = false;
             toast.ShowSuccess("Guardado correctamente");
             Nuevo();
         }
