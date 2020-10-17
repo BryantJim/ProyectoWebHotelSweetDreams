@@ -9,51 +9,34 @@ namespace SweetDreams.Client.Models
 {
     public class ReservacionesDetalle
     {
-        [Key]
         public int DetalleId { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public int ReservacionId { get; set; }
-
         public string NumeroHabitacion { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        [Range(minimum: 1, maximum: 100000000, ErrorMessage = "Debe ingresar al menos un adulto")]
-        public int CAdultos { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        public int CNinos { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
-        public string THabitacion { get; set; }
-
-        [Required(ErrorMessage = "Este campo no puede estar vacio.")]
+        public int CantidadAdultos { get; set; }
+        public int CantidadNinos { get; set; }
+        public string Tipo { get; set; }
         public decimal Precio { get; set; }
-
-        [ForeignKey("HabitacionId")]
         public int HabitacionId { get; set; }
 
         public ReservacionesDetalle()
         {
             DetalleId = 0;
             ReservacionId = 0;
-            CAdultos = 0;
-            CNinos = 0;
-            THabitacion = string.Empty;
+            CantidadAdultos = 0;
+            CantidadNinos = 0;
+            Tipo = string.Empty;
             Precio = 0;
-           
         }
 
-        public ReservacionesDetalle(int reservacionId,int cAdultos, int cNinos, string tHabitacion, int cantidadHabitacion, decimal precio, string imagen)
+        public ReservacionesDetalle(int detalleId, int reservacionId, string numeroHabitacion, int cantidadAdultos, int cantidadNinos, string tipo, decimal precio)
         {
-            DetalleId = 0;
+            DetalleId = detalleId;
             ReservacionId = reservacionId;
-            CAdultos = cAdultos;
-            CNinos = cNinos;
-            THabitacion = tHabitacion;
+            NumeroHabitacion = numeroHabitacion;
+            CantidadAdultos = cantidadAdultos;
+            CantidadNinos = cantidadNinos;
+            Tipo = tipo;
             Precio = precio;
-           
         }
-
     }
 }
