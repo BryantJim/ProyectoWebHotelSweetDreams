@@ -29,8 +29,11 @@ namespace SweetDreams.Client.Models
 
         public decimal Balance { get; set; }
 
+        public bool Accesibilidad { get; set; }
+
         [ForeignKey("ReservacionId")]
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
+
 
 
         public Reservaciones()
@@ -43,7 +46,7 @@ namespace SweetDreams.Client.Models
             CodigoSeguridad = string.Empty;
             Balance = 0;
             ReservacionDetalle = new List<ReservacionesDetalle>();
-
+            Accesibilidad = true;
         }
     }
 }

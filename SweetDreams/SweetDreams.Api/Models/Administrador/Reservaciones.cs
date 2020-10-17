@@ -22,7 +22,6 @@ namespace SweetDreams.Api.Models.Administrador
         [ForeignKey("ReservacionId")]
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
 
-        [ForeignKey("ClienteId")]
         public int ClienteId { get; set; }
     }
 }

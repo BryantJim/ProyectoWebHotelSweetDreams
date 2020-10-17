@@ -54,6 +54,8 @@
                         <tbody class="bg-white">
                             @for (int i = 0; i < ListaHabitacion.Count; i++)
                             {
+                                
+
                                 int index = i;
                                 Seleccion.Add(false);
                                 <tr>
@@ -206,6 +208,8 @@
         reservacion = new Reservaciones();
         ListaHabitacion = new List<Habitacion>();
         Seleccion = new List<bool>();
+        CantidadAdultoSeleccionado = 0;
+        CNinoSeleccionado = 0;
     }
 
     

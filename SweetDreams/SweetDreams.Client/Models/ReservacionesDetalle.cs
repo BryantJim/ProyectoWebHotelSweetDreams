@@ -30,8 +30,6 @@ namespace SweetDreams.Client.Models
         [Required(ErrorMessage = "Este campo no puede estar vacio.")]
         public decimal Precio { get; set; }
 
-        public string Imagen { get; set; }
-
         [ForeignKey("HabitacionId")]
         public int HabitacionId { get; set; }
 
@@ -43,7 +41,7 @@ namespace SweetDreams.Client.Models
             CNinos = 0;
             THabitacion = string.Empty;
             Precio = 0;
-            Imagen = string.Empty;
+           
         }
 
         public ReservacionesDetalle(int reservacionId,int cAdultos, int cNinos, string tHabitacion, int cantidadHabitacion, decimal precio, string imagen)
@@ -54,7 +52,7 @@ namespace SweetDreams.Client.Models
             CNinos = cNinos;
             THabitacion = tHabitacion;
             Precio = precio;
-            Imagen = imagen;
+           
         }
 
     }
