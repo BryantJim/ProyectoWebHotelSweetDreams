@@ -9,7 +9,7 @@
 @inject IToastService toast
 @inject IJSRuntime JS
 
-<EditForm Model="actividad">
+<EditForm Model="actividad" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -74,7 +74,7 @@
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
                 <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
             </div>
         </div>

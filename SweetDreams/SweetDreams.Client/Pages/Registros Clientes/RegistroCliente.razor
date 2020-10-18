@@ -8,7 +8,7 @@
 @inject HttpClient Http
 @inject IToastService toast
 
-<EditForm Model="cliente">
+<EditForm Model="cliente" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -57,7 +57,7 @@
         </div>
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
-                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Registrarse"> Guardar</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
                 <a  class="btn btn-lg btn-danger oi oi-circle-x" href=""> Cancelar</a>
             </div>
         </div>
