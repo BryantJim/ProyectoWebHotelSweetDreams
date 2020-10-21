@@ -83,8 +83,8 @@
                                 <td>@item.Descripcion</td>
                                 <td>@item.Lugar</td>
                                 <td>@item.Fecha</td>
-                                <td>@item.HoraInicio</td>
-                                <td>@item.HoraFinal</td>
+                                <td>@item.HoraInicio.ToString("hh:mm tt")</td>
+                                <td>@item.HoraFinal.ToString("hh:mm tt")</td>
                                 <td><a href="@($"RActividades/{item.ActividadId}")">Mostrar</a></td>
                             </tr>
                         }
