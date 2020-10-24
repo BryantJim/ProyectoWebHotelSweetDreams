@@ -9,7 +9,7 @@ using SweetDreams.Api.DAL;
 namespace SweetDreams.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20201015032657_Inicial")]
+    [Migration("20201021204815_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,10 +33,10 @@ namespace SweetDreams.Api.Migrations
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HoraFinal")
+                    b.Property<DateTime>("HoraFinal")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("HoraInicio")
+                    b.Property<DateTime>("HoraInicio")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Lugar")
@@ -134,6 +134,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<int>("ClienteId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("ClienteUsuario")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Codigo")
                         .HasColumnType("TEXT");
 
@@ -144,6 +147,9 @@ namespace SweetDreams.Api.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("FechaSalida")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NombreCliente")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Tarjeta")

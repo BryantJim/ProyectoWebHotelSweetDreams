@@ -9,7 +9,7 @@
 @inject HttpClient Http
 @inject IToastService toast
 
-<EditForm Model="reservacion">
+<EditForm Model="reservacion" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
 
     <div class="card">
@@ -205,18 +205,22 @@
                                 <th>Cantidad Adultos</th>
                                 <th>Cantidad Niños</th>
                                 <th>Precio</th>
+                                <th></th>
                             </tr>
                         </thead>
                         @*Asignacion de los datos del Detalle*@
                         <tbody class="bg-light">
-                            @foreach (var item in reservacion.ReservacionDetalle)
+                            @for (int i = 0; i < reservacion.ReservacionDetalle.Count; i++)
                             {
+                                int index = i;
+
                                 <tr>
-                                    <td>@item.NumeroHabitacion</td>
-                                    <td>@item.Tipo</td>
-                                    <td>@item.CantidadAdultos</td>
-                                    <td>@item.CantidadNinos</td>
-                                    <td>@item.Precio</td>
+                                    <td>@reservacion.ReservacionDetalle[i].NumeroHabitacion</td>
+                                    <td>@reservacion.ReservacionDetalle[i].Tipo</td>
+                                    <td>@reservacion.ReservacionDetalle[i].CantidadAdultos</td>
+                                    <td>@reservacion.ReservacionDetalle[i].CantidadNinos</td>
+                                    <td>@reservacion.ReservacionDetalle[i].Precio</td>
+                                    <td><button type="button" class="btn btn-lg btn-primary" @onclick="(() => Remover(index))">Remover</button></td>
                                 </tr>
                             }
                         </tbody>
@@ -249,7 +253,7 @@
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
                 <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
             </div>
         </div>
@@ -483,8 +487,31 @@
         }
     }
 
+    public async Task Remover(int index)
+    {
+        var habitacion = await Http.GetFromJsonAsync<Habitacion>($"http://localhost:5000/Api/Habitacion/{reservacion.ReservacionDetalle[index].HabitacionId}");
+
+        habitacion.Estado = true;
+
+        var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
+
+        var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+        if (estado)
+        {
+            reservacion.Balance -= reservacion.ReservacionDetalle[index].Precio;
+            reservacion.ReservacionDetalle.RemoveAt(index);
+        }
+    }
+
     private async Task Guardar()
     {
+        if (reservacion.ReservacionDetalle.Count < 1)
+        {
+            toast.ShowWarning("Debe reservar alguna habitación para guardar");
+            return;
+        }
+
         await ObtenerClienteUsuario();
 
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Reservacion", reservacion);

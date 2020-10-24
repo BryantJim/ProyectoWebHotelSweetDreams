@@ -8,7 +8,7 @@
 @inject HttpClient Http
 @inject IToastService toast
 
-<EditForm Model="habitacion">
+<EditForm Model="habitacion" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header">
@@ -102,7 +102,7 @@
         <div class="card-footer">
             <div class="form-group text-center" display: inline-block>
                 <button type="button" class="btn btn-lg btn-primary oi oi-file" @onclick="Nuevo"> Nuevo</button>
-                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Guardar"> Guardar</button>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload"> Guardar</button>
                 <button type="button" class="btn btn-lg btn-danger oi oi-trash" @onclick="Eliminar"> Eliminar</button>
             </div>
         </div>
@@ -181,6 +181,11 @@
 
     private async Task Guardar()
     {
+        if (await HabitacionExistente())
+        {
+            return;
+        }
+
         AsignarCaracteristicas();
 
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Habitacion", habitacion);
@@ -196,6 +201,22 @@
         else
             toast.ShowError("Guardado incorrecto");
 
+    }
+
+    private async Task<bool> HabitacionExistente()
+    {
+        var ListaHabitaciones = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+
+        foreach (var item in ListaHabitaciones)
+        {
+            if (item.NumeroHabitacion == habitacion.NumeroHabitacion)
+            {
+                toast.ShowWarning("Habitacion existente");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void AsignarCaracteristicas()

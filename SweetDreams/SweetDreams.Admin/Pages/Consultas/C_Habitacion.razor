@@ -8,37 +8,12 @@
 
 <div class="card-img">
     <div class="card-header">
-        <h1>Consulta de Habitacion</h1>
+        <h1>Consulta de Habitación</h1>
     </div>
 
     <div class="card-body">
         <form>
             <div class="form-row">
-                <div class="form-group">
-                    <label>Filtrar por Fecha</label>
-                    <select class="form-control" @bind="FiltroFecha">
-                        <option value="0">Todo</option>
-                        <option value="1">Fecha</option>
-                    </select>
-                </div>
-                &nbsp;
-                <div class="form-group">
-                    <label>Desde</label>
-                    <input type="date" @bind="Desde" class="form-control" />
-                </div>
-                &nbsp;
-                <div class="form-group">
-                    <label>Hasta</label>
-                    <input type="date" @bind="Hasta" class="form-control" />
-                </div>
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                &nbsp;
                 <div class="form-group">
                     <label>Filtro</label>
                     <select class="form-control" @bind="Filtro">
@@ -69,7 +44,7 @@
                             <th>Habitación ID</th>
                             <th>Numero Habitación</th>
                             <th>Tipo</th>
-                            <th>Caracteriscas</th>
+                            <th>Caracteríscas</th>
                             <th>Precio</th>
                             <th>Estado</th>
                             <th>Foto</th>
@@ -101,11 +76,7 @@
 {
     private List<Habitacion> ListaHabitacion { get; set; }
 
-    private DateTime Desde { get; set; } = DateTime.Now;
-    private DateTime Hasta { get; set; } = DateTime.Now;
-
     public string Filtro { get; set; }
-    private string FiltroFecha { get; set; }
 
     public string Criterio { get; set; }
 
@@ -113,7 +84,6 @@
     {
         Nuevo();
     }
-
 
     private void Nuevo()
     {
@@ -124,79 +94,78 @@
 
     private async Task Consultar()
     {
+        ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+
         switch (Filtro)
         {
-            case "0":
-                ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
+            case "0"://Todo
                 break;
-            case "1":
-                int id;
-                int.TryParse(Criterio, out id);
-                if(Criterio.Length > 0)
+            case "1"://HabitacionId
+                if (Criterio.Trim().Length > 0)
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
-                    ListaHabitacion = ListaHabitacion.Where(h => h.HabitacionId == id).ToList();
-                    break;
+                    try
+                    {
+                        int id = Convert.ToInt32(Criterio);
+                        ListaHabitacion = ListaHabitacion.Where(h => h.HabitacionId == id).ToList();
+                    }
+                    catch (FormatException)
+                    {
+                        toast.ShowWarning("Ingrese un numero");
+                    }
                 }
                 else
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.HabitacionId).ToList();
-                    break;
                 }
-            case "2":
+                break;
+            case "2"://Numero habitacion
                 if(Criterio.Length > 0)
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => h.NumeroHabitacion.Contains(Criterio)).ToList();
-                    break;
                 }
                 else
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.NumeroHabitacion).ToList();
-                    break;
                 }
-            case "3":
+                break;
+            case "3"://Tipo
                 if (Criterio.Length > 0)
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => h.Tipo.Contains(Criterio)).ToList();
-                    break;
                 }
                 else
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Tipo).ToList();
-                    break;
                 }
-            case "4":
+                break;
+            case "4"://caracteristicas
                 if (Criterio.Length > 0)
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => h.Caracteriscas.Contains(Criterio)).ToList();
-                    break;
                 }
                 else
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Caracteriscas).ToList();
-                    break;
                 }
-            case "5":
-                decimal cantidad = Convert.ToDecimal(Criterio);
+                break;
+            case "5"://Precio
                 if (Criterio.Length > 0)
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
-                    ListaHabitacion = ListaHabitacion.Where(h => h.Precio == cantidad).ToList();
-                    break;
+                    try
+                    {
+                        decimal cantidad = Convert.ToDecimal(Criterio);
+                        ListaHabitacion = ListaHabitacion.Where(h => h.Precio == cantidad).ToList();
+                    }
+                    catch (FormatException)
+                    {
+                        toast.ShowWarning("Ingrese un numero");
+                    }
                 }
                 else
                 {
-                    ListaHabitacion = (await Http.GetFromJsonAsync<Habitacion[]>($"http://localhost:5000/Api/Habitacion")).ToList();
                     ListaHabitacion = ListaHabitacion.Where(h => true).OrderBy(h => h.Precio).ToList();
-                    break;
                 }
+                break;
 
         }
     }

@@ -17,8 +17,8 @@ namespace SweetDreams.Api.Migrations
                     Descripcion = table.Column<string>(nullable: true),
                     Lugar = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
-                    HoraInicio = table.Column<string>(nullable: true),
-                    HoraFinal = table.Column<string>(nullable: true),
+                    HoraInicio = table.Column<DateTime>(nullable: false),
+                    HoraFinal = table.Column<DateTime>(nullable: false),
                     Accesibilidad = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -77,7 +77,9 @@ namespace SweetDreams.Api.Migrations
                     Codigo = table.Column<string>(nullable: true),
                     Balance = table.Column<decimal>(nullable: false),
                     Accesibilidad = table.Column<bool>(nullable: false),
-                    ClienteId = table.Column<int>(nullable: false)
+                    ClienteId = table.Column<int>(nullable: false),
+                    NombreCliente = table.Column<string>(nullable: true),
+                    ClienteUsuario = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

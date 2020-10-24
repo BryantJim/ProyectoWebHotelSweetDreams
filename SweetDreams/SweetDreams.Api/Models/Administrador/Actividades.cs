@@ -14,8 +14,8 @@ namespace SweetDreams.Api.Models.Administrador
         public string Descripcion { get; set; }
         public string Lugar { get; set; }
         public DateTime Fecha { get; set; }
-        public string HoraInicio { get; set; }
-        public string HoraFinal { get; set; }
+        public DateTime HoraInicio { get; set; }
+        public DateTime HoraFinal { get; set; }
         public bool Accesibilidad { get; set; }
     }
 }

@@ -12,8 +12,8 @@ namespace SweetDreams.Admin.Models
         public string Descripcion { get; set; }
         public string Lugar { get; set; }
         public DateTime Fecha { get; set; }
-        public string HoraInicio { get; set; }
-        public string HoraFinal { get; set; }
+        public DateTime HoraInicio { get; set; }
+        public DateTime HoraFinal { get; set; }
         public bool Accesibilidad { get; set; }
 
         public Actividades()
@@ -23,8 +23,8 @@ namespace SweetDreams.Admin.Models
             Descripcion = string.Empty;
             Lugar = string.Empty;
             Fecha = DateTime.Now;
-            HoraInicio = string.Empty;
-            HoraFinal = string.Empty;
+            HoraInicio = DateTime.Now;
+            HoraFinal = DateTime.Now;
             Accesibilidad = true;
         }
     }
