@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Api", "SweetDre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Admin", "SweetDreams.Admin\SweetDreams.Admin.csproj", "{72C27544-F1A1-4EA6-BF31-0DBEBE1460B4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SweetDreams.Clients", "SweetDreams.Clients\SweetDreams.Clients.csproj", "{716FF83C-4833-4ADD-89D5-170A6BADC4D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Clients", "SweetDreams.Clients\SweetDreams.Clients.csproj", "{716FF83C-4833-4ADD-89D5-170A6BADC4D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
