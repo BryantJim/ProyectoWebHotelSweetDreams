@@ -1,0 +1,113 @@
+﻿@page "/RegistroCliente"
+
+@using Models
+@using Pages
+@using System.IO
+@using System.Net.Http
+
+@inject HttpClient Http
+@inject IToastService toast
+
+<EditForm Model="cliente">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro De Clientes</h3>
+        </div>
+        <div class="card-body">
+            <form>
+
+
+                @*Nombre*@
+                <div class="form-group">
+                    <label>Nombres</label>
+                    <InputText @bind-Value="cliente.Nombres" class="form-control" />
+                </div>
+
+                @*Numero de Teléfono*@
+                <div class="form-group">
+                    <label>Teléfono</label>
+                    <InputText @bind-Value="cliente.Telefono" class="form-control" />
+                </div>
+
+                @*nombre de Usuario*@
+                <div class="form-group">
+                    <label>Nombre de Usuario</label>
+                    <InputText @bind-Value="cliente.NombreUsuario" class="form-control" />
+                </div>
+
+                @*Correo*@
+                <div class="form-group">
+                    <label>Correo</label>
+                    <InputText @bind-Value="cliente.Correo" class="form-control" />
+                </div>
+
+                @*Clave*@
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" @bind="cliente.Clave"  class="form-control" />
+                </div>
+
+                <div class="form-group">
+                    <label>Confirmar contraseña</label>
+                    <input type="password" @bind="Confirmar" class="form-control" />
+                </div>
+
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="form-group text-center" display: inline-block>
+                <button type="submit" class="btn btn-lg btn-success oi oi-cloud-upload" @onclick="Registrarse"> Guardar</button>
+                <a  class="btn btn-lg btn-danger oi oi-circle-x" href=""> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private Cliente cliente = new Cliente();
+
+    public string Confirmar { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Nuevo();
+    }
+
+    private void Nuevo()
+    {
+        this.cliente = new Cliente();
+        Confirmar = string.Empty;
+    }
+
+    private async Task Registrarse()
+    {
+        if (cliente.Clave == Confirmar)
+        {
+            var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Clientes", cliente);
+
+            var estado = await guardado.Content.ReadFromJsonAsync<bool>();
+
+
+            if (estado)
+            {
+                toast.ShowSuccess("Se ha registrado correctamente");
+                Nuevo();
+            }
+            else
+                toast.ShowError("No se ha podido registrar");
+        }
+        else
+        {
+            toast.ShowWarning("Las claves no coinciden");
+            Confirmar = string.Empty;
+        }
+
+    }
+
+    
+}
