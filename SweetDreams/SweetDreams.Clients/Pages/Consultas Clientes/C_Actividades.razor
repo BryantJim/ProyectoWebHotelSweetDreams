@@ -43,9 +43,8 @@
                     <label>Filtro</label>
                     <select class="form-control" @bind="Filtro">
                         <option value="0">Todo</option>
-                        <option value="1">ActividadId</option>
-                        <option value="2">Nombre Actividad</option>
-                        <option value="3">Lugar</option>
+                        <option value="1">Nombre Actividad</option>
+                        <option value="2">Lugar</option>
                     </select>
                 </div>
                 &nbsp;
@@ -64,7 +63,6 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                         <tr>
-                            <th>ActividadId</th>
                             <th>Nombre de Actividad</th>
                             <th>Descripción</th>
                             <th>Lugar</th>
@@ -78,7 +76,6 @@
                         @foreach (var item in ListaActividades)
                         {
                             <tr>
-                                <td>@item.ActividadId</td>
                                 <td>@item.NombreActividad</td>
                                 <td>@item.Descripcion</td>
                                 <td>@item.Lugar</td>
@@ -129,26 +126,8 @@
         {
             case "0": //Todo
                 break;
-            case "1"://ActividadId
-                if (Criterio.Trim().Length > 0)
-                {
-                    try
-                    {
-                        int id = Convert.ToInt32(Criterio);
-                        ListaActividades = ListaActividades.Where(a => a.ActividadId == id).ToList();
-                    }
-                    catch (FormatException)
-                    {
-                        toast.ShowWarning("Ingrese un numero");
-                        ListaActividades.Clear();
-                    }
-                }
-                else
-                {
-                    ListaActividades = ListaActividades.Where(a => true).OrderBy(a => a.ActividadId).ToList();
-                }
-                break;
-            case "2"://Nombre Actividad
+           
+            case "1"://Nombre Actividad
                 if (Criterio.Trim().Length > 0)
                 {
                     ListaActividades = ListaActividades.Where(a => a.NombreActividad.Contains(Criterio)).ToList();
@@ -158,7 +137,7 @@
                     ListaActividades = ListaActividades.Where(a => true).OrderBy(a => a.NombreActividad).ToList();
                 }
                 break;
-            case "3"://Lugar
+            case "2"://Lugar
                 if (Criterio.Trim().Length > 0)
                 {
                     ListaActividades = ListaActividades.Where(a => a.Lugar.Contains(Criterio)).ToList();
