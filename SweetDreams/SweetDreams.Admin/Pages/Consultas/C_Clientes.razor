@@ -168,13 +168,11 @@
 
     private void GenerarReporte()
     {
-
-        toast.ShowInfo("Hello");
-        @*ReporteClientes cliente = new ReporteClientes();
+        ReporteClientes cliente = new ReporteClientes();
 
         Data = cliente.Reporte(ListaClientes);
 
         pdfContent = "data:application/pdf;base64,";
-        pdfContent += System.Convert.ToBase64String(Data);*@
+        pdfContent += System.Convert.ToBase64String(Data);
     }
 }
