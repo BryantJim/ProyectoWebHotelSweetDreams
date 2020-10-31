@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using SweetDreams.Admin.Reportes;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SweetDreams.Admin.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
+using SweetDreams.Admin;
 
-namespace SweetDreams.Admin.Reportes
+namespace SweetDreams.Admin.Pages.Reportes
 {
     public class ReporteClientes{
 
@@ -45,8 +45,13 @@ namespace SweetDreams.Admin.Reportes
 
             float[] anchoColumnas = new float[columnas];
 
-            anchoColumnas[0] = 100; //Esta sera la fila 1 ClienteId
-            anchoColumnas[1] = 100; //Esta sera la fila 2 fecha
+            anchoColumnas[0] = 100; //ClienteId
+            anchoColumnas[1] = 100; //Nombres
+            anchoColumnas[2] = 100; //telefono
+            anchoColumnas[3] = 100; //Nombre de Usuario
+            anchoColumnas[4] = 100; //Correo
+            anchoColumnas[5] = 100; //Clave
+            anchoColumnas[6] = 100; //Accesibilidad
 
             pdfTable.SetWidths(anchoColumnas);
 
@@ -149,7 +154,7 @@ namespace SweetDreams.Admin.Reportes
             var _fontStyle = FontFactory.GetFont("Calibri", 9f, 0);
 
             #region Table Header
-            pdfCell = new PdfPCell(new Phrase("ArticuloId", fontStyle)); //Cliente Id
+            pdfCell = new PdfPCell(new Phrase("ClienteId", fontStyle)); //ClienteId
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
@@ -160,6 +165,39 @@ namespace SweetDreams.Admin.Reportes
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Telefono", fontStyle)); //Telefono
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Nombre de Usuario", fontStyle)); //Nombre de usuario
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Correo", fontStyle)); //Correo
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Clave", fontStyle)); //Clave
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
+            pdfCell = new PdfPCell(new Phrase("Accesibilidad", fontStyle)); //Accesibilidad
+            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
+            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
+            pdfCell.BackgroundColor = BaseColor.LightGray;
+            pdfTable.AddCell(pdfCell);
+
+
+
 
             pdfTable.CompleteRow();
             #endregion

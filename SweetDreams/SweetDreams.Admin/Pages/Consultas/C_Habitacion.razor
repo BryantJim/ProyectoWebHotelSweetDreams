@@ -2,6 +2,7 @@
 
 @using Models
 @using System.Net.Http
+@using Reportes
 
 @inject HttpClient Http
 @inject IToastService toast
@@ -54,21 +55,34 @@
                     <tbody class="bg-white">
                         @foreach (var item in ListaHabitacion)
                         {
-                        <tr>
-                            <td>@item.HabitacionId</td>
-                            <td>@item.NumeroHabitacion</td>
-                            <td>@item.Tipo</td>
-                            <td>@item.Caracteriscas</td>
-                            <td>@item.Precio</td>
-                            <td>@item.Estado</td>
-                            <td><img src="@item.Foto" style="height:80px;width:80px" /></td>
-                            <td><a href="@($"RHabitacion/{item.HabitacionId}")">Mostrar</a></td>
-                        </tr>
+                            <tr>
+                                <td>@item.HabitacionId</td>
+                                <td>@item.NumeroHabitacion</td>
+                                <td>@item.Tipo</td>
+                                <td>@item.Caracteriscas</td>
+                                <td>@item.Precio</td>
+                                <td>@item.Estado</td>
+                                <td><img src="@item.Foto" style="height:80px;width:80px" /></td>
+                                <td><a href="@($"RHabitacion/{item.HabitacionId}")">Mostrar</a></td>
+                            </tr>
                         }
                     </tbody>
                 </table>
             </div>
         </form>
+
+        <div class="card-footer">
+            <div class="form-group text-center">
+                <button target="_blank" class="btn btn-lg btn-primary oi oi-file" @onclick="GenerarReporte"> Generar Reporte</button>
+            </div>
+
+            <form>
+                @if (Data is { })
+                {
+                    <object data="@pdfContent" width="1000" height="500"></object>
+                }
+            </form>
+        </div>
     </div>
 </div>
 
@@ -79,6 +93,10 @@
     public string Filtro { get; set; }
 
     public string Criterio { get; set; }
+
+    string pdfContent = "";
+
+    byte[] Data;
 
     protected override void OnInitialized()
     {
@@ -170,5 +188,15 @@
                 break;
 
         }
+    }
+
+    private void GenerarReporte()
+    {
+        ReporteHabitaciones habitacion = new ReporteHabitaciones();
+
+        Data = habitacion.Reporte(ListaHabitacion);
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
     }
 }

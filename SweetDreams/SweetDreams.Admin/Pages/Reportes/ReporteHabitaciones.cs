@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using SweetDreams.Admin.Reportes;
+using SweetDreams.Admin;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SweetDreams.Admin.Models;
@@ -48,14 +48,13 @@ namespace SweetDreams.Admin.Pages.Reportes
 
             float[] anchoColumnas = new float[columnas];
 
-            anchoColumnas[0] = 100; //Esta sera la fila 1 ClienteId
-            anchoColumnas[1] = 100; //Esta sera la fila 2 Nombre
-            anchoColumnas[2] = 100; //Telefono
-            anchoColumnas[3] = 100; // Nombre de usuario
-            anchoColumnas[4] = 100; //Correo
-            anchoColumnas[5] = 100;
-            anchoColumnas[6] = 100;
-            anchoColumnas[7] = 100;
+            anchoColumnas[0] = 100; //HabitacionId
+            anchoColumnas[1] = 100; //Numero de Habitacion
+            anchoColumnas[2] = 100; //Tipo
+            anchoColumnas[3] = 100; //Caracteristicas
+            anchoColumnas[4] = 100; //Precio
+            anchoColumnas[5] = 100; //Estado
+            anchoColumnas[6] = 100; //Foto
 
             pdfTable.SetWidths(anchoColumnas);
 
@@ -123,7 +122,7 @@ namespace SweetDreams.Admin.Pages.Reportes
 
             pdfTable.CompleteRow();
 
-            pdfCell = new PdfPCell(new Phrase("Reporte de Clientes", fontStyle));
+            pdfCell = new PdfPCell(new Phrase("Reporte de Habitaciones", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.Colspan = 2;
             pdfCell.Border = 0;
