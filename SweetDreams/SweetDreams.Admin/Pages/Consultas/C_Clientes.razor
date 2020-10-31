@@ -2,6 +2,7 @@
 
 @using Models
 @using System.Net.Http
+@using Reportes
 
 @inject HttpClient Http
 @inject IToastService toast
@@ -68,15 +69,15 @@
 
     <div class="card-footer">
             <div class="form-group text-center">
-                <button target="_blank" class="btn btn-lg btn-primary oi oi-file"> Generar Reporte</button>
+                <button target="_blank" class="btn btn-lg btn-primary oi oi-file" @onclick="GenerarReporte"> Generar Reporte</button>
             </div>
 
-             @* <form>
+             <form>
                 @if (Data is { })
                 {
                     <object data="@pdfContent" width="1000" height="500"></object>
                 }
-            </form> *@
+            </form> 
         </div>
 </div>
 
@@ -87,6 +88,10 @@
     public string Filtro { get; set; }
 
     public string Criterio { get; set; }
+
+    string pdfContent = "";
+
+    byte[] Data;
 
     protected override void OnInitialized()
     {
@@ -102,6 +107,7 @@
 
     public async Task Consultar()
     {
+
         ListaClientes = (await Http.GetFromJsonAsync<Clientes[]>($"http://localhost:5000/Api/Clientes")).ToList();
 
         switch (Filtro)
@@ -158,5 +164,15 @@
                 }
                 break;
         }
+    }
+
+    private void GenerarReporte()
+    {
+        ReporteClientes cliente = new ReporteClientes();
+
+        Data = cliente.Reporte(ListaClientes);
+
+        pdfContent = "data:application/pdf;base64,";
+        pdfContent += System.Convert.ToBase64String(Data);
     }
 }

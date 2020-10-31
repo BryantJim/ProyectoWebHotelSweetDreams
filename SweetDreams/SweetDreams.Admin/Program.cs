@@ -26,7 +26,6 @@ namespace SweetDreams.Admin
 
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<HttpContextAccessor>();
-            //builder.Services.AddHttpClient();
             builder.Services.AddScoped<HttpClient>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });

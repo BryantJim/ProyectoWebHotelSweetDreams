@@ -7,13 +7,16 @@ using SweetDreams.Admin.Reportes;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SweetDreams.Admin.Models;
-
+using System.Net.Http;
+using System.Net.Http.Json;
 
 namespace SweetDreams.Admin.Reportes
 {
     public class ReporteClientes{
 
         int columnas = 11;
+
+        HttpClient Http;
 
         Document document = new Document();
         PdfPTable pdfTable;
@@ -24,12 +27,11 @@ namespace SweetDreams.Admin.Reportes
 
         List<Clientes> listaClientes = new List<Clientes>();
 
+
         public byte[] Reporte(List<Clientes> lista){
-            if(lista.Count < 1)
-                listaClientes = ClientesBLL.GetList(a=> true);
-            else
-                listaClientes = lista;
-            
+
+            listaClientes = lista;
+
             document = new Document(PageSize.Letter, 25f, 25f, 20f, 20f);
             pdfTable = new PdfPTable(columnas);
 
