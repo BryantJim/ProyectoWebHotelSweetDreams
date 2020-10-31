@@ -54,7 +54,6 @@ namespace SweetDreams.Admin.Pages.Reportes
             anchoColumnas[3] = 100; //Caracteristicas
             anchoColumnas[4] = 100; //Precio
             anchoColumnas[5] = 100; //Estado
-            anchoColumnas[6] = 100; //Foto
 
             pdfTable.SetWidths(anchoColumnas);
 
@@ -195,15 +194,6 @@ namespace SweetDreams.Admin.Pages.Reportes
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Foto", fontStyle)); //Foto
-            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            pdfCell.BackgroundColor = BaseColor.LightGray;
-            pdfTable.AddCell(pdfCell);
-
-
-
-
             pdfTable.CompleteRow();
             #endregion
 
@@ -248,14 +238,6 @@ namespace SweetDreams.Admin.Pages.Reportes
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
-
-                pdfCell = new PdfPCell(new Phrase(item.Foto.ToString(), _fontStyle));
-                pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                pdfCell.BackgroundColor = BaseColor.White;
-                pdfTable.AddCell(pdfCell);
-
-
 
                 pdfTable.CompleteRow();
             }
