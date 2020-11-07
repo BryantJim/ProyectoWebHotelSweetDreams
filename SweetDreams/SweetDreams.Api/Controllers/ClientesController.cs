@@ -75,6 +75,29 @@ namespace SweetDreams.Api.Controllers
             return eliminado;
         }
 
+        public async Task<ActionResult<bool>> ExisteUsuario(string usuario, string clave)
+        {
+            bool paso = false;
+
+            try
+            {
+                if (contexto.Clientes.Where(u => u.NombreUsuario == usuario && u.Clave == clave).SingleOrDefault() != null)
+                    paso = true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally
+            {
+                contexto.Dispose();
+            }
+
+            return paso;
+        }
+
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Clientes>> Buscar(int id)
         {
