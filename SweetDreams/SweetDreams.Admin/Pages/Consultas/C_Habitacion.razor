@@ -76,7 +76,7 @@
                 <button class="btn btn-lg btn-primary oi oi-file" @onclick="GenerarReporte"> Generar Reporte</button>
             </div>
 
-            <form>
+            <form class="text-center">
                 @if (Data is { })
                 {
                     <object data="@pdfContent" width="1000" height="500"></object>
