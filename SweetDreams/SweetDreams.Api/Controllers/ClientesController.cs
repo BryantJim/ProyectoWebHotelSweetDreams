@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SweetDreams.Api.DAL;
 using SweetDreams.Api.Models.Administrador;
+using SweetDreams.Api.Services;
+using SweetDreams.Api.Models.LoginCliente;
 
 namespace SweetDreams.Api.Controllers
 {
@@ -13,11 +15,14 @@ namespace SweetDreams.Api.Controllers
     [ApiController]
     public class ClientesController : ControllerBase
     {
+        private IUserService _userService;
+
         private Contexto contexto;
 
-        public ClientesController(Contexto contexto)
+        public ClientesController(Contexto contexto, IUserService userService)
         {
             this.contexto = contexto;
+            _userService = userService;
         }
 
         [HttpGet]
@@ -73,27 +78,6 @@ namespace SweetDreams.Api.Controllers
                 throw;
             }
             return eliminado;
-        }
-
-        public async Task<ActionResult<bool>> ExisteUsuario(string usuario, string clave)
-        {
-            bool paso = false;
-
-            try
-            {
-                if (contexto.Clientes.Where(u => u.NombreUsuario == usuario && u.Clave == clave).SingleOrDefault() != null)
-                    paso = true;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                contexto.Dispose();
-            }
-
-            return paso;
         }
 
 
@@ -156,6 +140,17 @@ namespace SweetDreams.Api.Controllers
                 return await Modificar(cliente);
             else
                 return await Insertar(cliente);
+        }
+
+        [HttpPost("authenticate")]
+        public IActionResult Authenticate(AuthenticateRequest model)
+        {
+            var response = _userService.Authenticate(model);
+
+            if (response == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(response);
         }
     }
 }

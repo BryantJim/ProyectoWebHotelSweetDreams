@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SweetDreams.Api.DAL;
+using SweetDreams.Api.Helpers;
+using SweetDreams.Api.Services;
 
 namespace SweetDreams.Api
 {
@@ -33,6 +35,12 @@ namespace SweetDreams.Api
                  .AllowAnyOrigin()));
             services.AddDbContext<Contexto>(optionsAction: options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
+
+            // configure strongly typed settings object
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
+            // configure DI for application services
+            services.AddScoped<IUserService, UserService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,6 +56,8 @@ namespace SweetDreams.Api
             app.UseCors("AllowWebApp");
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

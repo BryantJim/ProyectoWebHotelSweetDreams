@@ -28,6 +28,8 @@ namespace SweetDreams.Clients.Models
 
         public bool Accesibilidad { get; set; }
 
+        public string Token { get; set; }
+
         public Cliente()
         {
             ClienteId = 0;
@@ -37,6 +39,7 @@ namespace SweetDreams.Clients.Models
             Correo = string.Empty;
             Clave = string.Empty;
             Accesibilidad = true;
+            Token = string.Empty;
         }
     }
     
