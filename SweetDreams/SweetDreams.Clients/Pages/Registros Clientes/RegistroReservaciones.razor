@@ -3,10 +3,13 @@
 @using System.IO
 @using System.Net.Http
 @using Models
+@using SweetDreams.Clients.Services;
 
+@attribute [Authorize]
 
 @inject HttpClient Http
 @inject IToastService toast
+@inject ILocalStorageService LocalStorageService
 
 <EditForm Model="reservacion">
     <DataAnnotationsValidator />
@@ -17,6 +20,17 @@
         </div>
         <div class="card-body">
             <form>
+                <div class="form-group">
+                    <label>Cliente: @cliente.ClienteId</label>
+                    <label>@cliente.Nombres</label>
+                    <label>@cliente.NombreUsuario</label>
+                    <label>@cliente.Telefono</label>
+                    <label>@cliente.Correo</label>
+                    <label>@cliente.Clave</label>
+                    <label>@cliente.Accesibilidad</label>
+                    <label>@cliente.Token</label>
+                </div>
+
                 <div class="form-row">
                     <div class="form-group">
                         <label>Tipo Habitacion</label>
@@ -156,7 +170,7 @@
                     <ValidationMessage For="@(() => reservacion.FechaExpiracion)" />
                 </div>
 
-                <div class="form-group">                                    
+                <div class="form-group">
                     <label>Codigo de Seguridad:</label>
                     <InputText @bind-Value="reservacion.Codigo" />
                 </div>
@@ -183,6 +197,7 @@
 
     Reservaciones reservacion = new Reservaciones();
     Habitacion habitacion = new Habitacion();
+    Cliente cliente = new Cliente();
 
     private List<Habitacion> ListaHabitacion { get; set; }
 
@@ -190,9 +205,10 @@
 
     public string Criterio { get; set; }
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         Nuevo();
+        cliente = await LocalStorageService.GetItem<Cliente>("Clientes");
     }
 
     private void Nuevo()
