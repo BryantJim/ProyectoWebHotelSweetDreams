@@ -8,6 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Blazored.Toast;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+
 
 namespace SweetDreams.Admin
 {
@@ -20,6 +23,10 @@ namespace SweetDreams.Admin
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddBlazoredToast();
+
+            builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<HttpContextAccessor>();
+            builder.Services.AddScoped<HttpClient>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 

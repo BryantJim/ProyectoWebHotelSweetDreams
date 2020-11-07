@@ -1,18 +1,20 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SweetDreams.Admin;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using SweetDreams.Admin.Models;
 using System.Net.Http;
 using System.Net.Http.Json;
-using SweetDreams.Admin;
+
 
 namespace SweetDreams.Admin.Pages.Reportes
 {
-    public class ReporteClientes{
+    public class ReporteHabitaciones
+    {
 
         int columnas = 11;
 
@@ -25,12 +27,13 @@ namespace SweetDreams.Admin.Pages.Reportes
 
         MemoryStream memoryStream = new MemoryStream();
 
-        List<Clientes> listaClientes = new List<Clientes>();
+        List<Habitacion> ListaHabitaciones = new List<Habitacion>();
 
 
-        public byte[] Reporte(List<Clientes> lista){
+        public byte[] Reporte(List<Habitacion> lista)
+        {
 
-            listaClientes = lista;
+            ListaHabitaciones = lista;
 
             document = new Document(PageSize.Letter, 25f, 25f, 20f, 20f);
             pdfTable = new PdfPTable(columnas);
@@ -45,13 +48,12 @@ namespace SweetDreams.Admin.Pages.Reportes
 
             float[] anchoColumnas = new float[columnas];
 
-            anchoColumnas[0] = 100; //ClienteId
-            anchoColumnas[1] = 100; //Nombres
-            anchoColumnas[2] = 100; //telefono
-            anchoColumnas[3] = 100; //Nombre de Usuario
-            anchoColumnas[4] = 100; //Correo
-            anchoColumnas[5] = 100; //Clave
-            anchoColumnas[6] = 100; //Accesibilidad
+            anchoColumnas[0] = 100; //HabitacionId
+            anchoColumnas[1] = 100; //Numero de Habitacion
+            anchoColumnas[2] = 100; //Tipo
+            anchoColumnas[3] = 100; //Caracteristicas
+            anchoColumnas[4] = 100; //Precio
+            anchoColumnas[5] = 100; //Estado
 
             pdfTable.SetWidths(anchoColumnas);
 
@@ -65,7 +67,8 @@ namespace SweetDreams.Admin.Pages.Reportes
             return memoryStream.ToArray();
         }
 
-        private void ReportHeader(){
+        private void ReportHeader()
+        {
 
             // AÑADIR EL LOGO DE LA EMPRESA
 
@@ -79,7 +82,7 @@ namespace SweetDreams.Admin.Pages.Reportes
             pdfCell.Border = 0;
             pdfTable.AddCell(pdfCell);
 
-             pdfTable.CompleteRow();
+            pdfTable.CompleteRow();
         }
 
         // private PdfPTable AddLogo()
@@ -118,7 +121,7 @@ namespace SweetDreams.Admin.Pages.Reportes
 
             pdfTable.CompleteRow();
 
-            pdfCell = new PdfPCell(new Phrase("Reporte de Clientes", fontStyle));
+            pdfCell = new PdfPCell(new Phrase("Reporte de Habitaciones", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.Colspan = 2;
             pdfCell.Border = 0;
@@ -149,55 +152,47 @@ namespace SweetDreams.Admin.Pages.Reportes
             return pdfTable;
         }
 
-        private void ReportBody(){
+        private void ReportBody()
+        {
             fontStyle = FontFactory.GetFont("Calibri", 9f, 1);
             var _fontStyle = FontFactory.GetFont("Calibri", 9f, 0);
 
             #region Table Header
-            pdfCell = new PdfPCell(new Phrase("ClienteId", fontStyle)); //ClienteId
+            pdfCell = new PdfPCell(new Phrase("HabitacionId", fontStyle)); //HabitacionId
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Nombre", fontStyle)); //Nombre
+            pdfCell = new PdfPCell(new Phrase("Numero de habitacion", fontStyle)); //Numero de habitacion
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Telefono", fontStyle)); //Telefono
+            pdfCell = new PdfPCell(new Phrase("Tipo", fontStyle)); //Tipo
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Nombre de Usuario", fontStyle)); //Nombre de usuario
+            pdfCell = new PdfPCell(new Phrase("Caracteristicas", fontStyle)); //Caractereristicas
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Correo", fontStyle)); //Correo
+            pdfCell = new PdfPCell(new Phrase("Precio", fontStyle)); //Precio
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
 
-            pdfCell = new PdfPCell(new Phrase("Clave", fontStyle)); //Clave
+            pdfCell = new PdfPCell(new Phrase("Estado", fontStyle)); //Estado
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.LightGray;
             pdfTable.AddCell(pdfCell);
-
-            pdfCell = new PdfPCell(new Phrase("Accesibilidad", fontStyle)); //Accesibilidad
-            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            pdfCell.BackgroundColor = BaseColor.LightGray;
-            pdfTable.AddCell(pdfCell);
-
-
-
 
             pdfTable.CompleteRow();
             #endregion
@@ -205,57 +200,49 @@ namespace SweetDreams.Admin.Pages.Reportes
             #region Table Body
             int num = 0;
 
-            foreach (var item in listaClientes)
+            foreach (var item in ListaHabitaciones)
             {
                 num++;
-                pdfCell = new PdfPCell(new Phrase(item.ClienteId.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.HabitacionId.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.Nombres.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.NumeroHabitacion.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.NombreUsuario.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.Tipo.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.Telefono.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.Caracteriscas.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.Correo.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.Precio.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
 
-                pdfCell = new PdfPCell(new Phrase(item.Clave.ToString(), _fontStyle));
+                pdfCell = new PdfPCell(new Phrase(item.Estado.ToString(), _fontStyle));
                 pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
                 pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
                 pdfCell.BackgroundColor = BaseColor.White;
                 pdfTable.AddCell(pdfCell);
-
-                pdfCell = new PdfPCell(new Phrase(item.Accesibilidad.ToString(), _fontStyle));
-                pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-                pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-                pdfCell.BackgroundColor = BaseColor.White;
-                pdfTable.AddCell(pdfCell);
-
-                
 
                 pdfTable.CompleteRow();
             }
 
-            pdfCell = new PdfPCell(new Phrase("Total de Clientes", fontStyle));
+            pdfCell = new PdfPCell(new Phrase("Total de Habitaciones", fontStyle));
             pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
             pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
             pdfCell.BackgroundColor = BaseColor.White;
@@ -279,5 +266,6 @@ namespace SweetDreams.Admin.Pages.Reportes
             pdfTable.CompleteRow();
             #endregion
         }
+
     }
 }
