@@ -1,0 +1,17 @@
+﻿@page "/loginControl"
+@using System.Web;
+
+<AuthorizeView>
+    <Authorized>
+        <b>User: @context.User.Identity.Name</b>
+
+        <a class="ml-md-auto btn btn-success"
+           href="/logout?returnUrl=/"
+           target="_top">Logout<span class="oi oi-account-logout"></span></a>
+    </Authorized>
+    <NotAuthorized>
+        <div>
+            <h2>Hotel SweetDreams</h2>
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
