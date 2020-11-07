@@ -40,9 +40,32 @@
                     &nbsp;
                     &nbsp;
                     &nbsp;
-                  
+
+                    <div class="form-group">
+
+                        <label>Filtro</label>
+
+                        <select class="form-control" @bind="Filtro">
+                            <option value="0">Todo</option>
+                            <option value="1">ReservacionId</option>
+                            <option value="2">ClienteId</option>
+                            <option value="3">Nombre de Cliente</option>
+                            <option value="3">Nombre de Cliente Usuario</option>
+                        </select>
+
+                    </div>
+
                     &nbsp;
-                    
+
+                    <div class="form-group">
+                        <label>Criterio</label>
+                        <div class="input-group">
+                            <input type="text" @bind="Criterio" class="form-control">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => Consultar())"><i class="oi oi-list-rich" /> Consultar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="table-responsive text-nowrap">
@@ -76,6 +99,8 @@
                 </div>
             </form>
         </div>
+
+
 
         <div class="card-footer">
             <div class="form-group text-center">

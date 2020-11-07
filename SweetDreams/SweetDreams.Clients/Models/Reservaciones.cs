@@ -10,6 +10,9 @@ namespace SweetDreams.Clients.Models
     public class Reservaciones
     {
         public int ReservacionId { get; set; }
+        public int ClienteId { get; set; }
+        public string NombreCliente { get; set; }
+        public string ClienteUsuario { get; set; }
         public DateTime FechaInicio { get; set; }
         public DateTime FechaSalida { get; set; }
         public decimal Balance { get; set; }
@@ -18,6 +21,8 @@ namespace SweetDreams.Clients.Models
         public DateTime FechaExpiracion { get; set; }
 
         public bool Accesibilidad { get; set; }
+
+        
 
         public List<ReservacionesDetalle> ReservacionDetalle { get; set; }
 

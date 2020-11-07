@@ -20,15 +20,10 @@
         </div>
         <div class="card-body">
             <form>
+                 
                 <div class="form-group">
-                    <label>Cliente: @cliente.ClienteId</label>
+                    <label>Cliente:</label>
                     <label>@cliente.Nombres</label>
-                    <label>@cliente.NombreUsuario</label>
-                    <label>@cliente.Telefono</label>
-                    <label>@cliente.Correo</label>
-                    <label>@cliente.Clave</label>
-                    <label>@cliente.Accesibilidad</label>
-                    <label>@cliente.Token</label>
                 </div>
 
                 <div class="form-row">
@@ -298,6 +293,10 @@
 
     private async Task Guardar()
     {
+        reservacion.ClienteId = cliente.ClienteId;
+        reservacion.NombreCliente = cliente.Nombres;
+        reservacion.ClienteUsuario = cliente.NombreUsuario;
+
         var guardado = await Http.PostAsJsonAsync("http://localhost:5000/Api/Reservacion", reservacion);
 
         var estado = await guardado.Content.ReadFromJsonAsync<bool>();
