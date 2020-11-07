@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Admin", "SweetD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Clients", "SweetDreams.Clients\SweetDreams.Clients.csproj", "{716FF83C-4833-4ADD-89D5-170A6BADC4D1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SweetDreams.Cliente", "SweetDreams.Cliente\SweetDreams.Cliente.csproj", "{7B9E4E69-E55B-4999-BF25-CEC13060B79B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{716FF83C-4833-4ADD-89D5-170A6BADC4D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{716FF83C-4833-4ADD-89D5-170A6BADC4D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{716FF83C-4833-4ADD-89D5-170A6BADC4D1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B9E4E69-E55B-4999-BF25-CEC13060B79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B9E4E69-E55B-4999-BF25-CEC13060B79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B9E4E69-E55B-4999-BF25-CEC13060B79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B9E4E69-E55B-4999-BF25-CEC13060B79B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

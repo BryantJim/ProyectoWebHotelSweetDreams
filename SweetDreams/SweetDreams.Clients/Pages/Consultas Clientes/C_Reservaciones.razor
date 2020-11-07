@@ -9,7 +9,7 @@
 
     <div class="card-img">
         <div class="card-header">
-            <h1>Consulta de Reservaciones Clientes</h1>
+            <h1>Consulta de Reservaciones</h1>
         </div>
 
         <div class="card-body">
@@ -40,15 +40,33 @@
                     &nbsp;
                     &nbsp;
                     &nbsp;
-                  
+                    <div class="form-group">
+                        <label>Filtro</label>
+                        <select class="form-control" @bind="Filtro">
+                            <option value="0">Todo</option>
+                            <option value="1">ReservacionId</option>
+                            <option value="2">ClienteId</option>
+                            <option value="3">Nombre de Cliente</option>
+                            <option value="3">Nombre de Cliente Usuario</option>
+                        </select>
+                    </div>
                     &nbsp;
-                    
+                    <div class="form-group">
+                        <label>Criterio</label>
+                        <div class="input-group">
+                            <input type="text" @bind="Criterio" class="form-control">
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-primary input-group-text" @onclick="@(u => Consultar())"><i class="oi oi-list-rich" /> Consultar</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="table-responsive text-nowrap">
                     <table class="table table-striped">
                         <thead class="thead-light">
                             <tr>
+                                <th>ReservacionId</th>
                                 <th>Nombre de Cliente</th>
                                 <th>Nombre de Cliente Usuario</th>
                                 <th>FechaInicio</th>
@@ -62,6 +80,7 @@
                             @foreach (var item in ListaReservaciones)
                             {
                                 <tr>
+                                    <td>@item.ReservacionId</td>
                                     <td>@item.NombreCliente</td>
                                     <td>@item.ClienteUsuario</td>
                                     <td>@item.FechaInicio</td>
