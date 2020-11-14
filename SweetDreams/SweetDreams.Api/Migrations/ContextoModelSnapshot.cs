@@ -28,6 +28,9 @@ namespace SweetDreams.Api.Migrations
                     b.Property<string>("Descripcion")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Encargado")
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 

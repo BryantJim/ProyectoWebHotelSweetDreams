@@ -13,6 +13,7 @@ namespace SweetDreams.Api.Models.Administrador
         public string NombreActividad { get; set; }
         public string Descripcion { get; set; }
         public string Lugar { get; set; }
+        public string Encargado { get; set; }
         public DateTime Fecha { get; set; }
         public DateTime HoraInicio { get; set; }
         public DateTime HoraFinal { get; set; }

@@ -41,5 +41,15 @@
                 </li>
             }
         </ul>
+
+        
     </div>
+    <ul class="nav justify-content-end">
+            @if (AuthenticationService.cliente != null)
+            {
+                <li class="nav-item">
+                    <a class="nav-link " href="logout ">LogOut</a>
+                </li>
+            }
+        </ul>
 </nav>

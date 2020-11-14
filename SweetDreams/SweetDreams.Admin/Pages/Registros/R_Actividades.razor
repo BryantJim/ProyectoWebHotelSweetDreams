@@ -51,6 +51,12 @@
                     <InputText @bind-Value="actividad.Lugar" class="form-control" />
                 </div>
 
+                @*Encargado*@
+                <div class="form-group">
+                    <label>Encargado</label>
+                    <InputText @bind-Value="actividad.Encargado" class="form-control" />
+                </div>
+
                 @*Fecha*@
                 <div class="form-group">
                     <label>Fecha</label>
@@ -60,7 +66,7 @@
                 @*Hora Inicio*@
                 <div class="form-group">
                     <label>Hora Inicio</label>
-                    <input type="time" @bind="actividad.HoraInicio" class="form-control"/>
+                    <input type="time" @bind="actividad.HoraInicio" class="form-control" />
                 </div>
 
                 @*Hora Final*@

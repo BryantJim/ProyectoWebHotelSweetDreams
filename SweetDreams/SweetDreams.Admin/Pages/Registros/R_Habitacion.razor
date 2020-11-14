@@ -42,10 +42,10 @@
                 <div class="form-group">
                     <label>Tipo</label>
                     <select class="form-control" @bind="habitacion.Tipo">
-                        <option value="Individual">Individual</option>
-                        <option value="Doble">Doble</option>
-                        <option value="Suite Máster">Suite Máster</option>
-                        <option value="Suite Junior">Suite Junior</option>
+                        <option value="Habitación de lujo Carlos III">Habitación de lujo Carlos III</option>
+                        <option value="Habilitación de lujo Carlos IV">Habilitación de lujo Carlos IV</option>
+                        <option value="Habilitación 4 estrellas">Habilitación 4 estrellas</option>
+                        <option value="Habilitación 3 estrellas">Habilitación 3 estrellas</option>
                     </select>
                 </div>
 
@@ -54,7 +54,7 @@
                     <h5 class="card-header">Características</h5>
                     <div class="card-body">
                         <div class="form-group">
-                            @for (int i = 0; i < 5; i++)
+                            @for (int i = 0; i < 4; i++)
                             {
                                 int index = i;
 
@@ -119,17 +119,16 @@
     public int Id { get; set; }
 
 
-    bool[] Elecciones = new bool[5];
-    string[] Caracteristicas = new string[5];
+    bool[] Elecciones = new bool[4];
+    string[] Caracteristicas = new string[4];
 
 
     protected override async Task OnInitializedAsync()
     {
-        Caracteristicas[0] = "Una cama";
-        Caracteristicas[1] = "Lavabo";
-        Caracteristicas[2] = "Cama doble";
-        Caracteristicas[3] = "Refrigerador";
-        Caracteristicas[4] = "Amueblado";
+        Caracteristicas[0] = "Refrigerador";
+        Caracteristicas[1] = "Jacuzzi";
+        Caracteristicas[2] = "WiFi";
+        Caracteristicas[3] = "Aire acondicionado";
 
         Nuevo();
         await BuscarParametro();
@@ -176,7 +175,7 @@
     private void Nuevo()
     {
         habitacion = new Habitacion();
-        Elecciones = new bool[5];
+        Elecciones = new bool[4];
     }
 
     private async Task Guardar()
@@ -209,7 +208,7 @@
 
         foreach (var item in ListaHabitaciones)
         {
-            if (item.NumeroHabitacion == habitacion.NumeroHabitacion)
+            if (item.NumeroHabitacion == habitacion.NumeroHabitacion && habitacion.HabitacionId != item.HabitacionId)
             {
                 toast.ShowWarning("Habitacion existente");
                 return true;
@@ -226,7 +225,7 @@
         habitacion.CaracteristicasSelecciones = string.Empty;
         habitacion.Caracteriscas = string.Empty;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < 4; i++)
         {
             if (i == 0)
                 habitacion.CaracteristicasSelecciones = habitacion.CaracteristicasSelecciones + Elecciones[i].ToString();
