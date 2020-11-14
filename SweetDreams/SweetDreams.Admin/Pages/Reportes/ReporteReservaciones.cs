@@ -245,27 +245,6 @@ namespace SweetDreams.Admin.Pages.Reportes
                 pdfTable.CompleteRow();
             }
 
-            pdfCell = new PdfPCell(new Phrase("Total de Reservaciones", fontStyle));
-            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            pdfCell.BackgroundColor = BaseColor.White;
-            pdfCell.Border = 0;
-            pdfTable.AddCell(pdfCell);
-
-            pdfCell = new PdfPCell(new Phrase(num++.ToString(), fontStyle));
-            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            pdfCell.BackgroundColor = BaseColor.White;
-            pdfCell.Border = 0;
-            pdfTable.AddCell(pdfCell);
-
-            pdfCell = new PdfPCell(new Phrase("            ", fontStyle));
-            pdfCell.HorizontalAlignment = Element.ALIGN_CENTER;
-            pdfCell.VerticalAlignment = Element.ALIGN_MIDDLE;
-            pdfCell.BackgroundColor = BaseColor.White;
-            pdfCell.Border = 0;
-            pdfTable.AddCell(pdfCell);
-
             pdfTable.CompleteRow();
             #endregion
         }

@@ -9,7 +9,7 @@
 
     <div class="card-img">
         <div class="card-header">
-            <h1>Consulta de Reservaciones</h1>
+            <h1>Consulta de Reservaciones Clientes</h1>
         </div>
 
         <div class="card-body">
@@ -40,8 +40,11 @@
                     &nbsp;
                     &nbsp;
                     &nbsp;
+
                     <div class="form-group">
+
                         <label>Filtro</label>
+
                         <select class="form-control" @bind="Filtro">
                             <option value="0">Todo</option>
                             <option value="1">ReservacionId</option>
@@ -49,8 +52,11 @@
                             <option value="3">Nombre de Cliente</option>
                             <option value="3">Nombre de Cliente Usuario</option>
                         </select>
+
                     </div>
+
                     &nbsp;
+
                     <div class="form-group">
                         <label>Criterio</label>
                         <div class="input-group">
@@ -66,7 +72,6 @@
                     <table class="table table-striped">
                         <thead class="thead-light">
                             <tr>
-                                <th>ReservacionId</th>
                                 <th>Nombre de Cliente</th>
                                 <th>Nombre de Cliente Usuario</th>
                                 <th>FechaInicio</th>
@@ -80,7 +85,6 @@
                             @foreach (var item in ListaReservaciones)
                             {
                                 <tr>
-                                    <td>@item.ReservacionId</td>
                                     <td>@item.NombreCliente</td>
                                     <td>@item.ClienteUsuario</td>
                                     <td>@item.FechaInicio</td>
@@ -96,12 +100,14 @@
             </form>
         </div>
 
+
+
         <div class="card-footer">
             <div class="form-group text-center">
                 <button class="btn btn-lg btn-primary oi oi-file" @onclick="GenerarReporte"> Generar Reporte</button>
             </div>
 
-            <form>
+            <form class="text-center">
                 @if (Data is { })
                 {
                     <object data="@pdfContent" width="1000" height="500"></object>

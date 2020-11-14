@@ -5,7 +5,7 @@
 
 <div class="col-md-6 offset-md-3 mt-5">
     <div class="card">
-        <h4 class="card-header">HotelSweetDreams Login</h4>
+        <h4 class="card-header text-center">HotelSweetDreams Login</h4>
         <div class="card-body">
             <EditForm Model="@model" OnValidSubmit="HandleValidSubmit">
                 <DataAnnotationsValidator />
@@ -19,17 +19,24 @@
                     <InputText @bind-Value="model.Password" type="password" class="form-control" />
                     <ValidationMessage For="@(() => model.Password)" />
                 </div>
-                <button class="btn btn-primary">
-                    @if (loading)
-                    {
-                        <span class="spinner-border spinner-border-sm mr-1"></span>
-                    }
-                    Login
-                </button>
+                <div class="form-group text-lg-center">
+                    <button class="btn btn-primary">
+                        @if (loading)
+                        {
+                            <span class="spinner-border spinner-border-sm mr-1"></span>
+                        }
+                        Log In
+                    </button>
+
+                    <a href="/RegistroCliente"> Register</a>
+
+                </div>
+
                 @if (!string.IsNullOrEmpty(error))
                 {
                     <div class="alert alert-danger mt-3 mb-0">@error</div>
                 }
+
             </EditForm>
         </div>
     </div>
