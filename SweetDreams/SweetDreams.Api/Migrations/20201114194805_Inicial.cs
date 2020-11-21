@@ -16,6 +16,7 @@ namespace SweetDreams.Api.Migrations
                     NombreActividad = table.Column<string>(nullable: true),
                     Descripcion = table.Column<string>(nullable: true),
                     Lugar = table.Column<string>(nullable: true),
+                    Encargado = table.Column<string>(nullable: true),
                     Fecha = table.Column<DateTime>(nullable: false),
                     HoraInicio = table.Column<DateTime>(nullable: false),
                     HoraFinal = table.Column<DateTime>(nullable: false),
