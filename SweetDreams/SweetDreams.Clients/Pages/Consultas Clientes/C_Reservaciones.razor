@@ -3,6 +3,7 @@
 @using Models
 @using System.Net.Http
 @using SweetDreams.Clients.Services;
+@using Reportes
 
 @attribute [Authorize]
 
@@ -84,20 +85,20 @@
         </form>
     </div>
     
-    @*
+    
                 <div class="card-footer">
                     <div class="form-group text-center">
                       <button class="btn btn-lg btn-primary oi oi-file" @onclick="GenerarReporte"> Generar Reporte</button>
         </div>
 
-                <form>
+                <form class="text-center">
                     @if (Data is { })
                     {
                         <object data="@pdfContent" width="1000" height="500"></object>
                     }
                 </form>
             </div>
-    *@
+    
 </div>
 
 
@@ -156,16 +157,14 @@
         }
     }
 
-    @*
-
     private void GenerarReporte()
     {
-        ReporteReservaciones reservaciones = new ReporteReservaciones();
+        reporteReservaciones reservaciones = new reporteReservaciones();
 
         Data = reservaciones.Reporte(ListaReservaciones);
 
         pdfContent = "data:application/pdf;base64,";
         pdfContent += System.Convert.ToBase64String(Data);
     }
-        *@
+        
 }
