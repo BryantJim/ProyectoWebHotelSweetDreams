@@ -1,7 +1,80 @@
 ﻿@page "/"
 
-<h1>Bienvenido</h1>
 
-Bienvenido a la interfaz administrador del hotel SweetDreams!
+<div class="view" style="        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('resources/guest-house-graceland-lobby.jpg');
+        background-position: center;
+        width: auto;
+        height: 880px;">
+
+    <div class="container position-relative" style="width: 1000px; height: 800px;">
+        <div class="modal-header justify-content-center" style="color:white;">
+            <h3>Bienvenido a la interfaz administrador del hotel SweetDreams!</h3>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="row align-self-center" style="width:900px; height:300px;">
+                <div id="carouselpass" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="carouselpass" data-slide-to="0" class="active"></li>
+                        <li data-target="carouselpass" data-slide-to="1"></li>
+                        <li data-target="carouselpass" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" data-interval="2000">
+                            <img src="../Resources/restaurantbeach.jpg" style="width:900px; height:300px;" class="d-block">
+                        </div>
+                        <div class="carousel-item" data-interval="2000">
+                            <img src="../Resources/Room.jpg" style="width:900px; height:300px;" class="d-block ">
+                        </div>
+                        <div class="carousel-item" data-interval="2000">
+                            <img src="../Resources/Piscina.jpg" style="width:900px; height:300px;" class="d-block">
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselpass" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselpass" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="text-body" style="
+                                          font-family:'Comic sans MS';
+                                          font-size:16px;">
+
+                    <p style="color:black;">
+                        Bienvenidos a la parte Admin del Hotel SweetDreams donde hacemos de tus vacaciones las mejores de todas.
+                    </p>
+                    <p style="color:black;">
+                        En esta parte usted podra adminstrar el hotel. agregar entidades, Registrar Habitaciones y demas. disfrute de su dia!
+                    </p>
+                </div>
+
+                <div class="text-body justify-content-center" style="
+                                          font-family:'Comic sans MS';
+                                          color:white;
+                                          font-size:16px;">
+                    <p style="color:black; text-align:center">
+                        Tel:809-000-0000
+                    </p>
+                    <p style="color:black; text-align:center">
+                        Email: HotelSweetDreams@example.com
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer" style="color:azure;">
+        <p>Hotel SweetDreams</p>
+    </div>
+</div>
 
 
